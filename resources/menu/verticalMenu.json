@@ -1,0 +1,46 @@
+{
+  "menu": [
+    {
+      "url": "/",
+      "name": "Dashboard",
+      "icon": "menu-icon tf-icons ri-home-smile-line",
+      "slug": "pages-home"
+    },
+    {
+      "url": "/customers",
+      "icon": "menu-icon tf-icons ri-user-search-line",
+      "name": "Customers",
+      "slug": "customers.index"
+    },
+    {
+      "url": "/invoices",
+      "icon": "menu-icon tf-icons ri-receipt-line",
+      "name": "Invoices",
+      "slug": "invoices.index"
+    },
+    {
+      "url": "/tariffs",
+      "icon": "menu-icon tf-icons ri-price-tag-3-line",
+      "name": "Tariffs",
+      "slug": "tariffs.index"
+    },
+    {
+      "url": "/meters",
+      "icon": "menu-icon tf-icons ri-dashboard-2-line",
+      "name": "Meters",
+      "slug": "meters.index"
+    },
+    {
+      "url": "/analytics",
+      "icon": "menu-icon tf-icons ri-dashboard-line",
+      "name": "Analytics",
+      "slug": "analytics.index"
+    },
+    {
+      "url": "/settings",
+      "icon": "menu-icon tf-icons ri-settings-line",
+      "name": "Users",
+      "slug": "settings.index"
+    }
+  ]
+}
