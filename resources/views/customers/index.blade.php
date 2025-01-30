@@ -179,7 +179,6 @@
           <th>Name</th>
           <th>Phone</th>
           <th>Contract No.</th>
-          <th>Outstanding</th>
           {{-- <th>House No.</th> --}}
           <th>Payam</th>
           @if (Auth::user()->role == 'Admin')
@@ -196,7 +195,7 @@
             </td>
             <td>+211{{ $customer->phone ?? '' }}</td>
             <td>{{ $customer->contract ?? '' }}</td>
-            <td>{{ $customer->credit ?? '' }}</td>
+            {{-- <td>{{ $customer->credit ?? '' }}</td> --}}
             {{-- <td>{{ $customer->location->number ?? 'No Address' }}</td> --}}
             <td>{{ $customer->location->neighborhood->name ?? 'No Area'}}</td>
             @if (Auth::user()->role == 'Admin')

@@ -131,11 +131,23 @@
                         </div>
                         <div class="item-wraper">
                             AREA:
-                            <span class="flex-1">{{$payment->customer->location->address}}</span>
+                            <span class="flex-1">
+                                @if ($payment->customer->location)
+                                    {{$payment->customer->location->address}}
+                                @else
+                                    ---
+                                @endif
+                            </span>
                         </div>
                         <div class="item-wraper">
                             HOUSE NO:
-                            <span class="flex-1">{{$payment->customer->location->number}}</span>
+                            <span class="flex-1">
+                                @if ($payment->customer->location)
+                                    {{$payment->customer->location->number}}
+                                @else
+                                    ---
+                                @endif
+                            </span>
                         </div>
                     </div>
                     <div class="flex-1 center-content">
