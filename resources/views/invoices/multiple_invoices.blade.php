@@ -132,21 +132,38 @@
                         <div class="item-wraper">
                             AREA:
                             <span class="flex-1">
+<<<<<<< HEAD
                                 @if ($payment->customer->location)
                                     {{$payment->customer->location->address}}
                                 @else
                                     ---
                                 @endif
                             </span>
+=======
+		                @if($payment->customer->location)
+				   {{$payment->customer->location->address}}
+		                @else
+		                 ---
+		                @endif
+                           </span>
+>>>>>>> 515e72f7994aff3bcbd18ec2e707ef7aff957534
                         </div>
                         <div class="item-wraper">
                             HOUSE NO:
                             <span class="flex-1">
+<<<<<<< HEAD
                                 @if ($payment->customer->location)
                                     {{$payment->customer->location->number}}
                                 @else
                                     ---
                                 @endif
+=======
+                           @if($payment->customer->location)
+                             {{$payment->customer->location->number}}
+                            @else
+                            ---
+                            @endif
+>>>>>>> 515e72f7994aff3bcbd18ec2e707ef7aff957534
                             </span>
                         </div>
                     </div>

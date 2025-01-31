@@ -23,7 +23,7 @@ class InvoicesController extends Controller
         // Query payments table
         $invoices = Payment::with('customer')->whereNull('description')->get();
         $totalInvoices = $invoices->count();
-
+	
         return view('invoices.index', compact('invoices', 'totalInvoices' ));
     }
 
