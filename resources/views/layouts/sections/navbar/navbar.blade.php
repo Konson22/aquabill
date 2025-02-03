@@ -96,7 +96,7 @@ $navbarDetached = ($navbarDetached ?? '');
                         Username
                       @endif
                     </span>
-                    <small class="text-muted">{{Auth::user()->role}}</small>
+                    <small class="text-muted">Dept: {{Auth::user()->department}}</small>
                   </div>
                 </div>
               </a>
