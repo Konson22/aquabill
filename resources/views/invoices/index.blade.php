@@ -59,6 +59,8 @@
 @endsection
 
 @section('content')
+
+@if(Auth::user()->role == 'Admin' OR Auth::user()->department == 'Meters')
   @foreach($invoices as $paid)
     @include('modals.edit-payment-modal', ['payment' => $paid])
     @include('modals.view-payment-modal', ['payment' => $paid])
@@ -152,6 +154,11 @@
     </div>
   </div>
 
+  @else
+  <h5>This Section is for Authorized uses!</h5>
+@endif
+
+
 @endsection
 
 <script>
@@ -220,7 +227,7 @@
     $('.invoice-table').DataTable({
       dom: 'frtipB', 
       buttons: [
-        'excel', 
+        // 'excel', 
         // 'print'
       ],
       initComplete: function () {

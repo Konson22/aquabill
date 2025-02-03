@@ -452,10 +452,12 @@
               </div>
             </div>
           </div>
-          @if(!$customer->location)
-            <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#modalLocation">
-              Add Location
-            </button>
+          @if (Auth::user()->role == 'Admin' OR Auth::user()->department == 'Customers')
+            @if(!$customer->location)
+              <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#modalLocation">
+                Add Location
+              </button>
+            @endif
           @endif
         </div>
       </div>
@@ -467,71 +469,76 @@
           <div class="card-header">
             <div class="nav-align-top">
               <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                  <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#invoices" aria-controls="invoices" aria-selected="true">Invoices</button>
-                </li>
+                @if (Auth::user()->role == 'Admin' OR Auth::user()->department == 'Invoices')
+                  <li class="nav-item">
+                    <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#invoices" aria-controls="invoices" aria-selected="true">Invoices</button>
+                  </li>
+                @endif
                 <li class="nav-item">
                   <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#readings" aria-controls="readings" aria-selected="false">Readings</button>
                 </li>
-                <li class="nav-item">
-                  <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#onetimeinvoices" aria-controls="onetimeinvoices" aria-selected="false">One-Time Invoices</button>
-                </li>
+                @if (Auth::user()->role == 'Admin' OR Auth::user()->department == 'Invoices')
+                  <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#onetimeinvoices" aria-controls="onetimeinvoices" aria-selected="false">One-Time Invoices</button>
+                  </li>
+                @endif
               </ul>
             </div>
           </div>
           <div class="card-body">
             <div class="tab-content p-0">
-              <div class="tab-pane fade show active" id="invoices" role="tabpanel">
-                <div class="table">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th>No.</th>
-                        <th>Amount</th>
-                        <th>Paid</th>
-                        <th>Remain</th>
-                        <th>Status</th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody class="table-border-bottom-0">
-                      @forelse ($payments as $payment)
-                      <tr>
-                        <td>{{ $payment->id }}</td>
-                        <td>{{ $payment->amount }}</td>
-                        <td>{{ $payment->paid }}</td>
-                        <td>{{ $payment->remaining }}</td>
-                        <td>{{ $payment->status }}</td>
-                        <td>
-                          <a href="{{ route('payments.show', $payment->id) }}" title="View" data-bs-toggle="modal" data-bs-target="#viewPaymentModal{{ $payment->id }}">
-                            <i class="ri-fullscreen-line"></i>
-                          </a>
-                           | @if($customer->location) 
-                          <a href="/invoices/print/{{$payment->id }}" title="Print" target="_blank">
-                            <i class="ri-file-pdf-2-line"></i>
-                          </a> 
-                          @endif 
-                          @if (Auth::user()->role == 'Admin')
-                            |
-                            <a href="#" title="Pay" data-bs-toggle="modal" data-bs-target="#editPaymentModal{{ $payment->id }}"><i class="ri-hand-coin-line"></i></a>
-                          @endif 
-                        </td>
-                      </tr>
-                      @empty
-                      <tr>
-                        <td colspan="4">No invoices found for this customer.</td>
-                      </tr>
-                      @endforelse
-                    </tbody>
-                  </table>
+              @if (Auth::user()->role == 'Admin' OR Auth::user()->department == 'Invoices')
+                <div class="tab-pane fade show active" id="invoices" role="tabpanel">
+                  <div class="table">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>No.</th>
+                          <th>Amount</th>
+                          <th>Paid</th>
+                          <th>Remain</th>
+                          <th>Status</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody class="table-border-bottom-0">
+                        @forelse ($payments as $payment)
+                        <tr>
+                          <td>{{ $payment->id }}</td>
+                          <td>{{ $payment->amount }}</td>
+                          <td>{{ $payment->paid }}</td>
+                          <td>{{ $payment->remaining }}</td>
+                          <td>{{ $payment->status }}</td>
+                          <td>
+                            <a href="{{ route('payments.show', $payment->id) }}" title="View" data-bs-toggle="modal" data-bs-target="#viewPaymentModal{{ $payment->id }}">
+                              <i class="ri-fullscreen-line"></i>
+                            </a>
+                            | @if($customer->location) 
+                            <a href="/invoices/print/{{$payment->id }}" title="Print" target="_blank">
+                              <i class="ri-file-pdf-2-line"></i>
+                            </a> 
+                            @endif 
+                            @if (Auth::user()->role == 'Admin')
+                              |
+                              <a href="#" title="Pay" data-bs-toggle="modal" data-bs-target="#editPaymentModal{{ $payment->id }}"><i class="ri-hand-coin-line"></i></a>
+                            @endif 
+                          </td>
+                        </tr>
+                        @empty
+                        <tr>
+                          <td colspan="4">No invoices found for this customer.</td>
+                        </tr>
+                        @endforelse
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-              </div>
+              @endif
               <div class="tab-pane fade" id="readings" role="tabpanel">
                 <div class="table">
                   <table class="table">
                     <thead>
                       <tr>
-                        {{-- <th>No.</th> --}}
                         <th>Meter No.</th>
                         <th>Current</th>
                         <th>Previous</th>
@@ -543,7 +550,6 @@
                     <tbody class="table-border-bottom-0">
                       @forelse($readings as $reading)
                       <tr>
-                        {{-- <td>{{ $reading->id }}</td> --}}
                         <td>{{ $reading->meter->serial }}</td>
                         <td>{{ $reading->value }}</td>
                         <td>{{ $reading->previous }}</td>
@@ -621,15 +627,17 @@
                 </li>
               </ul>
             </div>
-            <div class="card-header-elements ms-auto">
-              <div class="dropdown">
-                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ri-more-2-line"></i></button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="javascript:;" data-bs-target="#modalUpdateMeter" data-bs-toggle="modal"><i class="ri-pencil-line me-1"></i> Update Meter</a>
-                  <a class="dropdown-item" href="javascript:;" data-bs-target="#modalMeter" data-bs-toggle="modal"><i class="ri-pencil-line me-1"></i> Replace Meter</a>
+            @if (Auth::user()->role == 'Admin' OR Auth::user()->department == 'Meters')
+              <div class="card-header-elements ms-auto">
+                <div class="dropdown">
+                  <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ri-more-2-line"></i></button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="javascript:;" data-bs-target="#modalUpdateMeter" data-bs-toggle="modal"><i class="ri-pencil-line me-1"></i> Update Meter</a>
+                    <a class="dropdown-item" href="javascript:;" data-bs-target="#modalMeter" data-bs-toggle="modal"><i class="ri-pencil-line me-1"></i> Replace Meter</a>
+                  </div>
                 </div>
               </div>
-            </div>
+            @endif
           </div>
           <div class="card-body">
             <div class="tab-content p-0">

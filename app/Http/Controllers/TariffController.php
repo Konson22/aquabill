@@ -69,9 +69,25 @@ class TariffController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        // Validate the request
+        $request->validate([
+            'name' => 'required|string|max:50',
+            'tariff' => 'required|numeric|between:0,100',
+        ]);
+
+        // Find the category
+        $category = Category::findOrFail($id);
+
+        // Update the category
+        $category->update([
+            'name' => $request->name,
+            'tariff' => $request->tariff,
+        ]);
+
+        return view('categories.index');
+        // return back()->with('success', 'Reading updated successfully.');
     }
 
     /**

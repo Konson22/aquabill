@@ -8,6 +8,9 @@
 @section('title', 'Tariffs')
 
 @section('content')
+@foreach($categories as $category)
+@include('modals.editCategory', ['category' => $category])
+@endforeach
 
 <!-- Cards with separator -->
 <div class="col-12">
@@ -78,7 +81,7 @@
 <div class="col-12">
     <div class="row">
         <div class="col-6">
-          @if (Auth::user()->role == 'Admin')
+          @if (Auth::user()->role == 'Admin' OR Auth::user()->department == 'Tatiff')
             <div class="modal-footer mb-2">
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCategory">
                 Add New Category
@@ -102,13 +105,18 @@
                     <td>{{ $category->name }}</td>
                     <td>{{ $category->tariff }}</td>
                     <td>
-                <ul>
-                    @foreach($category->tariffs as $tariff)
-                    <li>{{ $tariff->name }} - {{ $tariff->amount }}</li>
-                    @endforeach
-                </ul>
-            </td>
-                </tr>
+                      <ul>
+                          @foreach($category->tariffs as $tariff)
+                          <li>{{ $tariff->name }} - {{ $tariff->amount }}</li>
+                          @endforeach
+                      </ul>
+                    </td>
+                    <td>
+                      {{-- @if (Auth::user()->role == 'Admin')
+                        <a href="#" title="Edit" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ $category->id }}"><i class="ri-hand-coin-line"></i></a>
+                      @endif  --}}
+                    </td>
+                  </tr>
                 @endforeach
             </tbody>
         </table>
@@ -118,7 +126,7 @@
 
 </div>
 <div class="col-6">
-        @if (Auth::user()->role == 'Admin')
+        @if (Auth::user()->role == 'Admin' OR Auth::user()->department == 'Tatiff')
           <div class="modal-footer mb-2">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modaltariff">
               Add New Charge

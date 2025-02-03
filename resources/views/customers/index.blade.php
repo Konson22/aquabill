@@ -98,26 +98,28 @@
 <div class="col-sm-6 col-xl-3">
 
 </div>
-  <div class="col-sm-6 col-xl-3">
-    <div class="card">
-      <div class="card-body" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" aria-controls="offcanvasEnd">
-        <div class="d-flex justify-content-between">
-          <div class="me-1">
-            <p class="text-heading mb-1 ">Add Customer</p>
-            <div class="d-flex align-items-center">
-              <h4 class="mb-1 me-1">+</h4>
-              <p class="text-success mb-1">(Create new)</p>
-            </div>
+@if(Auth::user()->role == 'Admin' OR Auth::user()->department == 'Customers')
+<div class="col-sm-6 col-xl-3">
+  <div class="card">
+    <div class="card-body" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" aria-controls="offcanvasEnd">
+      <div class="d-flex justify-content-between">
+        <div class="me-1">
+          <p class="text-heading mb-1 ">Add Customer</p>
+          <div class="d-flex align-items-center">
+            <h4 class="mb-1 me-1">+</h4>
+            <p class="text-success mb-1">(Create new)</p>
           </div>
-          <div class="avatar">
-            <div class="avatar-initial bg-label-success rounded-3">
-              <div class="ri-user-add-line ri-26px"></div>
-            </div>
+        </div>
+        <div class="avatar">
+          <div class="avatar-initial bg-label-success rounded-3">
+            <div class="ri-user-add-line ri-26px"></div>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
+@endif
 
 
   </div>

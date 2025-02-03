@@ -48,7 +48,7 @@ class CategoryController extends Controller
     public function show($id)
     {
         $category = Category::findOrFail($id);
-        return view('categories.show', compact('category'));
+        return view('tariffs.show', compact('category'));
     }
 
     /**
@@ -80,7 +80,8 @@ class CategoryController extends Controller
             'tariff' => $request->tariff,
         ]);
 
-        return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
+        return view('categories.index');
+        // return back()->with('success', 'Reading updated successfully.');
     }
 
     /**

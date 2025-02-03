@@ -19,7 +19,7 @@ class SettingsController extends Controller
         $users = User::all(['id', 'name', 'department', 'role', 'email']);
         $roles = Role::all();
         $departments = Department::all();
-        // dd($users);
+        // dd($departments);
 
         return view('settings.index', compact('users', 'roles', 'departments'));
     }

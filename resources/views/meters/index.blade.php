@@ -1,4 +1,6 @@
 @php
+  use Illuminate\Support\Facades\Auth;
+
 $configData = Helper::appClasses();
 @endphp
 
@@ -74,10 +76,17 @@ $configData = Helper::appClasses();
 </div>
 </div>
 <hr class="my-6">
+@if(Auth::user()->role == 'Admin' OR Auth::user()->department == 'Meters')
+<div class="modal-footer mb-2">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalMeter">
+    Add meter model
+  </button>
+</div>
+@endif
 <div class="col-12">
     <div class="row">
         <div class="col-6">
-          <div class="modal-footer mb-12">
+          <div class="modal-footer ">
 
             </div>
             <div class="card mb-2">
@@ -122,11 +131,7 @@ $configData = Helper::appClasses();
 </div>
         </div>
         <div class="col-6">
-            <div class="modal-footer mb-2">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalMeter">
-                    Add meter model
-                </button>
-            </div>
+           
             <div class="card mb-2">
               <h5 class="card-header">Meter Models</h5>
               <div class="table-responsive">
