@@ -47,6 +47,7 @@ Route::middleware([
         Route::post('invoices/multiple_invoices', [InvoicesController::class, 'multiple']);
         Route::get('invoices/print-one-time-invoice/{id}', [InvoicesController::class, 'oneTimeInvoice'])->name('invoices.oneTimeInvoice');
         Route::get('invoices/print/{id}', [InvoicesController::class, 'print'])->name('invoices.print');
+        Route::post('invoices/filter', [InvoicesController::class, 'filter'])->name('invoices.filter');
         Route::get('settings/deleteUser/{id}', [SettingsController::class, 'deleteUser'])->name('settings.deleteUser');
         Route::get('settings/deleteRole/{id}', [SettingsController::class, 'deleteRole'])->name('settings.deleteRole');
         Route::get('settings/editDepartment/{id}', [SettingsController::class, 'editDepartment'])->name('settings.editDepartment');

@@ -608,10 +608,10 @@
         {{ $payments->links() }}
       </div>
       {{-- THE START OF METER INFO --}}
-      <div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
+      <div class="col-xl-12 col-lg-7 col-md-7 order-0 order-md-1">
         <div class="card mb-2">
           <div class="card-header header-elements">
-            <div class="nav-align-top">
+            <div class="nav-align-top col-lg-7 col-md-1">
               <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
                   <button type="button" class="card-header-title nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#meter-details" aria-controls="meter-details" aria-selected="true">Meter Details</button>
@@ -636,12 +636,6 @@
               <div class="tab-pane fade show active" id="meter-details" role="tabpanel">
                 <table class="table">
                   @foreach($customer->meters as $meter)
-                    <tr>
-                      <th><b>Serial No.</b></th>
-                      <td>{{ $meter->serial ?? 'No data' }}</td>
-                      <th><b>Status</b></th>
-                      <td>{{ $meter->status ?? 'No data' }}</td>
-                    </tr>
                     <tr>
                       <th><b>Size</b></th>
                       <td>{{ optional($meter)->type->size ?? 'No data' }}</td>
@@ -769,6 +763,7 @@
                           <div class="form-floating form-floating-outline">
                             <select name="status" id="status" class="form-select rounded-md shadow-sm mt-1 block w-full">
                               <option value="Active" {{ optional(optional($customer->meter)->status)->is('Active') ? 'selected' : '' }}>Active</option>
+                              <option value="Inactive" {{ optional(optional($customer->meter)->status)->is('Inactive') ? 'selected' : '' }}>Inactive</option>
                               <option value="Maintenance" {{ optional(optional($customer->meter)->status)->is('Maintenance') ? 'selected' : '' }}>Maintenance</option>
                               <option value="Damaged" {{ optional(optional($customer->meter)->status)->is('Damaged') ? 'selected' : '' }}>Damaged</option>
                             </select>

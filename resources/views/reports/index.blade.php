@@ -42,7 +42,7 @@
               <div class="card-body">
                 <div class="d-flex justify-content-between">
                   <div class="me-1">
-                    <p class="text-heading mb-1"><a href="/reports/billing/">Billing Reports</a></p>
+                    <p class="text-heading mb-1"><a >Billing Reports</a></p>
                     <p class="mb-1">Monthly Billing</p>
               </div>
               <div class="avatar"><a href="/reports/billing/">

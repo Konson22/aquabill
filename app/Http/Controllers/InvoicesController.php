@@ -28,8 +28,17 @@ class InvoicesController extends Controller
     }
 
 
-    public function show(){
+    function filter(Request $request){
 
+        // $startDate = Carbon::parse($request->input('start_date'))->startOfDay();
+        // $endDate = Carbon::parse($request->input('end_date'))->endOfDay();
+
+    // $data = YourModel::whereBetween('created_at', [$startDate, $endDate])->get();
+         // Query payments table
+         $invoices = Payment::with('customer')->whereNull('description')->get();
+         $totalInvoices = $invoices->count();
+     
+         return view('invoices.filter', compact('invoices', 'totalInvoices' ));
     }
 
     

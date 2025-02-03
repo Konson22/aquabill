@@ -25,49 +25,41 @@ class HomePage extends Controller
     $paidBills = Payment::where('remaining', 0.00)->count();
     $unpaidBills = Payment::where('remaining', '>', 0.00)->count();
     $totalCustomers = Customer::count();
-
+    
+    $newCustomers = Meter::whereBetween('created_at', [$startOfMonth, $endOfMonth])->where('status', 'Active')->count();
+    
+    $newActive = Meter::whereBetween('created_at', [$startOfMonth, $endOfMonth])->where('status', 'Active')->count();
+    
     $activeMeters = Meter::where('status', 'Active')->count();
-    $inactiveMeters = Meter::where('status', 'Damaged')->count();
-
-    $newCustomers = Meter::whereBetween('created_at', [$startOfMonth, $endOfMonth])
-                    ->where('status', 'Active')
-                    ->count();
-
-    $newActive = Meter::whereBetween('created_at', [$startOfMonth, $endOfMonth])
-                        ->where('status', 'Active')
-                        ->count();
-
-    $active = Meter::where('status', 'Active')->count();
+    $inactiveMeters = Meter::where('status', 'Inactive')->count();
     $maintenance = Meter::where('status', 'Maintenance')->count();
-    $newMaintenance = Meter::whereBetween('created_at', [$startOfMonth, $endOfMonth])
-                        ->where('status', 'Maintenance')
-                        ->count();
-
+    $inactive = Meter::where('status', 'Inactive')->count();
+    $newMaintenance = Meter::whereBetween('created_at', [$startOfMonth, $endOfMonth])->where('status', 'Maintenance')->count();
     $damaged = Meter::where('status', 'Damaged')->count();
-    $newDamaged = Meter::whereBetween('created_at', [$startOfMonth, $endOfMonth])
-                        ->where('status', 'Damaged')
-                        ->count();
+    $newDamaged = Meter::whereBetween('created_at', [$startOfMonth, $endOfMonth])->where('status', 'Damaged')->count();
 
     $meterLogs = Reading::all();
     $totalConsumption = $meterLogs->reduce(function ($carry, $log) {
       return $carry + max(0, $log->value - $log->previous);
     }, 0);
+
+
     return view('content.pages.pages-home', compact(
       'newActive', 
       'totalBills', 
       'paidBills',
-      'activeMeters',
-      'inactiveMeters',
+      'inactive',
       'unpaidBills',
       'newCustomers',
       'totalCustomers',
       'totalUnpaid',
       'totalConsumption',
-      'active',
       'maintenance',
       'damaged',
       'newMaintenance',
       'newDamaged',
+      'activeMeters',
+      'inactiveMeters',
       'totalPayments',
       'totalPaid'
     ));

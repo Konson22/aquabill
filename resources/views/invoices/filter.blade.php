@@ -39,11 +39,7 @@
   .dataTables_filter input{
     width: 300px !important;
   }
-  #selectAll{
-    /* margin-right: 8px; */
-    /* width: 25px;
-    height: 25px; */
-  }
+ 
   .customers-card{
     position: relative;
   }
@@ -82,9 +78,9 @@
   
   <div class="card">
     <div class="card-body customers-card">
-      {{-- <div class="d-flex justify-content-between p-4">
+      <div class="d-flex justify-content-between p-4">
         <h4>Date Range</h4>
-        <form method="POST" action="{{ route('invoices.filter') }}">
+        <form method="GET" action="{{ route('invoices.filter') }}">
           <div class="form-floating form-floating-outline">
             <input 
               class="form-control" 
@@ -105,7 +101,7 @@
           </div>
           <button class="btn btn-primary">Search</button>
         </form>
-      </div> --}}
+      </div>
       <table class="table invoice-table" id='example'>
         <thead>
           <tr>

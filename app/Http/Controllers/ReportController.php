@@ -36,7 +36,8 @@ class ReportController extends Controller
                         ->where('status', 'Active')
                         ->count();
         $activeMeters = Meter::where('status', 'Active')->count();
-        $inactiveMeters = Meter::where('status', 'Damaged')->count();
+        $damagedMeters = Meter::where('status', 'Damaged')->count();
+        $inactiveMeters = Meter::where('status', 'Inactive')->count();
 
          // Retrieve all meter logs
          $meterLogs = Reading::all();
@@ -46,7 +47,20 @@ class ReportController extends Controller
             return $carry + max(0, $log->value - $log->previous);
         }, 0);
 
-        return view('reports.index', compact('totalPayments', 'totalConsumption', 'totalPaid', 'totalUnpaid','totalBills','paidBills','unpaidBills','totalCustomers','newCustomers','activeMeters','inactiveMeters'));
+        return view('reports.index', compact(
+            'totalPayments', 
+            'totalConsumption', 
+            'totalPaid', 
+            'totalUnpaid',
+            'totalBills',
+            'paidBills',
+            'unpaidBills',
+            'totalCustomers',
+            'newCustomers',
+            'activeMeters',
+            'inactiveMeters',
+            'damagedMeters'
+        ));
     }
 
     /**

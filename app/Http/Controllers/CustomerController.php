@@ -88,6 +88,9 @@ class CustomerController extends Controller
 
         $neighborhoods = Neighborhood::all();
         $types = Type::all();
+        $meter = Type::find($customer->meter_id);
+
+        // dd($customer->meter->type);
 
         $payments = Payment::where('customer_id', $id)->whereNull('description')->orderBy('created_at', 'desc')->paginate(12);
 
@@ -114,8 +117,23 @@ class CustomerController extends Controller
         ->orderBy('created_at', 'desc')
         ->get();
 
+      
 
-        return view('customers.show', compact('customer', 'categories', 'types','readings','current','today','usage','payments','neighborhoods','location','meterLogs','paymentsonetime'));
+        return view('customers.show', compact(
+            'customer', 
+            'categories', 
+            'types',
+            'meter',
+            'readings',
+            'current',
+            'today',
+            'usage',
+            'payments',
+            'neighborhoods',
+            'location',
+            'meterLogs',
+            'paymentsonetime'
+        ));
     }
 
     /**

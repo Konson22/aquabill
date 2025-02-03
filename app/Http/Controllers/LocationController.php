@@ -35,7 +35,7 @@ class LocationController extends Controller
         $request->validate([
             'customer_id' => 'required|exists:customers,id',
             'number' => 'required|string|max:255',
-            'name' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
             'address' => 'required|string|max:255',
             'neighborhood_id' => 'nullable|string',
             'new_neighborhood' => 'nullable|string|max:255',
@@ -53,7 +53,7 @@ class LocationController extends Controller
         $location = Location::create([
             'customer_id' => $request->customer_id,
             'number' => $request->number,
-            'name' => $request->name,
+            'name' => $request->name ?? '',
             'address' => $request->address,
             'neighborhood_id' => $neighborhoodId,
             'latitude' => $request->latitude,

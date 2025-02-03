@@ -49,7 +49,7 @@ $configData = Helper::appClasses();
           <div class="avatar me-4">
             <span class="avatar-initial rounded-3 bg-label-primary"><i class="ri-drop-line ri-24px"></i></span>
           </div>
-          <h4 class="mb-0">{{ $active }}</h4>
+          <h4 class="mb-0">{{ $activeMeters }}</h4>
         </div>
         <h6 class="mb-0 fw-normal">Active Water Connections</h6>
         <p class="mb-0">
@@ -100,9 +100,9 @@ $configData = Helper::appClasses();
           <div class="avatar me-4">
             <span class="avatar-initial rounded-3 bg-label-info"><i class='ri-time-line ri-24px'></i></span>
           </div>
-          <h4 class="mb-0">0</h4>
+          <h4 class="mb-0">{{ $inactiveMeters }}</h4>
         </div>
-        <h6 class="mb-0 fw-normal">Delayed Water Billing</h6>
+        <h6 class="mb-0 fw-normal">Inactive Meters</h6>
         <p class="mb-0">
           <span class="me-1 fw-medium">0</span>
           <small class="text-muted">this month</small>

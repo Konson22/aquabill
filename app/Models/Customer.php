@@ -39,7 +39,7 @@ class Customer extends Model
     }
     public function meters()
     {
-        return $this->hasMany(Meter::class, 'id', 'id');
+        return $this->hasMany(Meter::class, 'id', 'meter_id');
     }
     
     public function lastReading(): HasOne
