@@ -81,7 +81,7 @@
 <div class="col-12">
     <div class="row">
         <div class="col-6">
-          @if (Auth::user()->role == 'Admin' OR Auth::user()->department == 'Tatiff')
+          @if (Auth::user()->role == 'Admin' OR Auth::user()->department == 'tatiff')
             <div class="modal-footer mb-2">
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCategory">
                 Add New Category
@@ -126,7 +126,7 @@
 
 </div>
 <div class="col-6">
-        @if (Auth::user()->role == 'Admin' OR Auth::user()->department == 'Tatiff')
+        @if (Auth::user()->role == 'Admin' OR Auth::user()->department == 'tatiff')
           <div class="modal-footer mb-2">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modaltariff">
               Add New Charge

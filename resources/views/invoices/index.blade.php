@@ -74,7 +74,7 @@
         Select All
       </label>
       <button class="btn btn-primary text-white" id="sendSelected" 
-        @if (Auth::user()->role == 'Admin') @else disabled @endif
+        @if (Auth::user()->role == 'Admin' OR Auth::user()->role == 'invoices') @else disabled @endif
       >
         print Selected
       </button>

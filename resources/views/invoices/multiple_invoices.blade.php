@@ -55,7 +55,7 @@
         margin-bottom: 20px;
         font-size: 14px;
         padding: 1rem;
-        background-color: #ececec;
+        background-color: #fff;
     }
     .center-content{
         margin: 0 1rem;
@@ -69,8 +69,8 @@
     .item-wraper span{
         margin-left: 10px;
         flex: 1;
-        padding: 2px 5px;
-        background-color: rgb(255, 255, 255);
+        padding: 3px 10px;
+        background-color: rgb(245, 245, 245);
     }
 
     .sign{
@@ -100,7 +100,7 @@
     }
 </style>
 @section('content')
-    <div class="card card-body">
+    <div class="car">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="h5">Total Invoices ({{$totalInvoices}})</h1>
             <button class="btn btn-primary btn-lg" onclick="printDiv('print-all')">Print All Bill</button>
@@ -132,38 +132,21 @@
                         <div class="item-wraper">
                             AREA:
                             <span class="flex-1">
-<<<<<<< HEAD
                                 @if ($payment->customer->location)
                                     {{$payment->customer->location->address}}
                                 @else
                                     ---
                                 @endif
-                            </span>
-=======
-		                @if($payment->customer->location)
-				   {{$payment->customer->location->address}}
-		                @else
-		                 ---
-		                @endif
                            </span>
->>>>>>> 515e72f7994aff3bcbd18ec2e707ef7aff957534
                         </div>
                         <div class="item-wraper">
                             HOUSE NO:
                             <span class="flex-1">
-<<<<<<< HEAD
                                 @if ($payment->customer->location)
                                     {{$payment->customer->location->number}}
                                 @else
                                     ---
                                 @endif
-=======
-                           @if($payment->customer->location)
-                             {{$payment->customer->location->number}}
-                            @else
-                            ---
-                            @endif
->>>>>>> 515e72f7994aff3bcbd18ec2e707ef7aff957534
                             </span>
                         </div>
                     </div>

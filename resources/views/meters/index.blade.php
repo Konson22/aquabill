@@ -76,7 +76,7 @@ $configData = Helper::appClasses();
 </div>
 </div>
 <hr class="my-6">
-@if(Auth::user()->role == 'Admin' OR Auth::user()->department == 'Meters')
+@if(Auth::user()->role == 'Admin' OR Auth::user()->department == 'meter')
 <div class="modal-footer mb-2">
   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalMeter">
     Add meter model

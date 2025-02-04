@@ -128,11 +128,11 @@
                 </div>
                 <div class="item-wraper">
                     AREA:
-                    <span class="flex-1">{{$location->address}}</span>
+                    <span class="flex-1">{{$location->address ?? 'No Data'}}</span>
                 </div>
                 <div class="item-wraper">
                     HOUSE NO:
-                    <span class="flex-1">{{$location->number}}</span>
+                    <span class="flex-1">{{$location->number ?? 'No data'}}</span>
                 </div>
             </div>
             <div class="flex-1 center-content">
