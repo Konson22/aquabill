@@ -16,7 +16,9 @@ class SettingsController extends Controller
 {
 
     public function index(){
-        $users = User::all(['id', 'name', 'department', 'role', 'email']);
+        // $users = User::all(['id', 'name', 'department', 'role', 'email']);
+        $users = User::where('role', '!=', 'Admin')->get(['id', 'name', 'department', 'role', 'email']);
+
         $roles = Role::all();
         $departments = Department::all();
         // dd($departments);

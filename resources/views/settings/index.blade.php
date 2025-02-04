@@ -235,7 +235,7 @@
               <select id="department" name="department" class="form-select form-select-sm" aria-label="Choose User Department">
                 <option selected value="">Choose Department</option>
                 @foreach($departments as $department)
-                  <option value="{{ $department->name }}">{{ $department->name }}</option>
+                  <option value="{{ $department->department_name }}">{{ $department->name }}</option>
                 @endforeach
               </select>
               <label for="department">Department</label>
