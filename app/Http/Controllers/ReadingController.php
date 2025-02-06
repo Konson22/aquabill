@@ -68,7 +68,7 @@ class ReadingController extends Controller
         $payment->customer_id = $request->input('customer_id');
         $payment->reading_id = $reading->id;
         $payment->paid = $request->input('paid');
-        $payment->date = date($request->input('date'));
+        $payment->date = $request->input('date');
         $payment->status = $request->input('status');
         $payment->remaining = $remaining + $charges;
         $payment->updated_at = null;
