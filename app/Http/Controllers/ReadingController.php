@@ -45,7 +45,7 @@ class ReadingController extends Controller
         $reading->meter_id = $request->input('meter_id');
         $reading->value = $request->input('value');
         $reading->previous = $request->input('previous');
-        $reading->date = date($request->input('date'));
+        $reading->date = $request->input('date');
         $reading->source = $request->input('source');
         $reading->billing_officer = $request->input('billing_officer');
         $reading->save();
@@ -68,7 +68,7 @@ class ReadingController extends Controller
         $payment->customer_id = $request->input('customer_id');
         $payment->reading_id = $reading->id;
         $payment->paid = $request->input('paid');
-        $payment->date = date($request->input('date'));
+        $payment->date = $request->input('date');
         $payment->status = $request->input('status');
         $payment->remaining = $remaining + $charges;
         $payment->updated_at = null;
