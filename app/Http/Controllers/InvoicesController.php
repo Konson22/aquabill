@@ -41,6 +41,17 @@ class InvoicesController extends Controller
          return view('invoices.filter', compact('invoices', 'totalInvoices' ));
     }
 
+    function specific_month(Request $request){
+
+        $startDate = Carbon::parse($request->input('start_date'))->startOfDay();
+        $endDate = Carbon::parse('d/m/Y', $request->input('end_date'))->endOfDay();
+
+        $invoices = Payment::whereBetween('date', [$startDate, $endDate])->get();
+        // dd(date("d/m/Y", strtotime($request->input('start_date'))));
+        // $invoices = Payment::with('customer')->whereNull('description')->get();
+
+        return view('invoices.specific_month', compact('invoices', 'totalInvoices' ));
+    }
     
     public function summary($id){
         $customer = Customer::findOrFail($id);
@@ -118,7 +129,7 @@ class InvoicesController extends Controller
         }
 
         $customerName = $payment->customer->last_name;
-        $paymentDate = Carbon::parse($payment->date)->format('Y-m-d');
+        $paymentDate = Carbon::parse($payment->date)->format('d-m-Y');
 
         // dd($payment);
 
@@ -144,7 +155,7 @@ class InvoicesController extends Controller
         $totalInvoices = Payment::count();
 
 
-        // dd($payments);
+        dd($payments);
         return view('invoices.print_multiple_invoices',  compact(
             'payments', 
             'totalInvoices', 
@@ -170,7 +181,7 @@ class InvoicesController extends Controller
     
     public function oneTimeInvoice($id)
     {
-        $payment = Payment::with(['customer.location'])->find($id);
+        $payment = Payment::with(['customer.location', 'reading'])->find($id);
 
         if (!$payment) {
             return redirect()->back()->with('error', 'Payment not found.');
@@ -183,7 +194,7 @@ class InvoicesController extends Controller
         $location = $payment->customer->location;
         $paymentDate = Carbon::parse($payment->date)->format('Y-m-d');
 
-        // dd($category);
+        // dd($payment);
 
         return view('invoices.one-time-invoice', compact('payment', 'customer', 'location', 'category'));
     }

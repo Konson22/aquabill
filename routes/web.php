@@ -43,11 +43,13 @@ Route::middleware([
         Route::get('/reports/billing/create', [BillingReportController::class, 'create'])->name('reports.billing.create');
         Route::post('payments/store-one-time-invoice', [PaymentController::class, 'storeOneTimeInvoice'])->name('payments.store_one_time_invoice');
         Route::get('invoices/summary/{id}', [InvoicesController::class, 'summary'])->name('invoices.summary');
-        Route::get('invoices/print_multiple_invoices', [InvoicesController::class, 'printMultiple'])->name('invoices.print_multiple_invoices');
-        Route::post('invoices/multiple_invoices', [InvoicesController::class, 'multiple']);
+        // Route::get('invoices/print_multiple_invoices', [InvoicesController::class, 'printMultiple'])->name('invoices.print_multiple_invoices');
         Route::get('invoices/print-one-time-invoice/{id}', [InvoicesController::class, 'oneTimeInvoice'])->name('invoices.oneTimeInvoice');
         Route::get('invoices/print/{id}', [InvoicesController::class, 'print'])->name('invoices.print');
         Route::post('invoices/filter', [InvoicesController::class, 'filter'])->name('invoices.filter');
+        Route::post('invoices/multiple_invoices', [InvoicesController::class, 'multiple']);
+        Route::post('/invoices/specific_month', [InvoicesController::class, 'specific_month'])->name('invoices.specific_month');
+
         Route::get('settings/deleteUser/{id}', [SettingsController::class, 'deleteUser'])->name('settings.deleteUser');
         Route::get('settings/deleteRole/{id}', [SettingsController::class, 'deleteRole'])->name('settings.deleteRole');
         Route::get('settings/editDepartment/{id}', [SettingsController::class, 'editDepartment'])->name('settings.editDepartment');

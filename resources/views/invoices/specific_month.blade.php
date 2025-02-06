@@ -39,11 +39,7 @@
   .dataTables_filter input{
     width: 300px !important;
   }
-  #selectAll{
-    /* margin-right: 8px; */
-    /* width: 25px;
-    height: 25px; */
-  }
+ 
   .customers-card{
     position: relative;
   }
@@ -59,8 +55,6 @@
 @endsection
 
 @section('content')
-
-@if(Auth::user()->role == 'Admin' OR Auth::user()->department == 'Meters')
   @foreach($invoices as $paid)
     @include('modals.edit-payment-modal', ['payment' => $paid])
     @include('modals.view-payment-modal', ['payment' => $paid])
@@ -74,7 +68,7 @@
         Select All
       </label>
       <button class="btn btn-primary text-white" id="sendSelected" 
-        @if (Auth::user()->role == 'Admin' OR Auth::user()->role == 'invoices') @else disabled @endif
+        @if (Auth::user()->role == 'Admin') @else disabled @endif
       >
         print Selected
       </button>
@@ -84,15 +78,16 @@
   
   <div class="card">
     <div class="card-body customers-card">
-      {{-- <div class="d-flex justify-content-between p-4">
+      <div class="d-flex justify-content-between p-4">
         <h4>Date Range</h4>
-        <form method="POST" class="d-flex" action="{{ route('invoices.specific_month') }}">
+        <form method="GET" action="{{ route('invoices.specific_month') }}">
           @csrf
+         
           <div class="form-floating form-floating-outline">
             <input 
               class="form-control" 
               type="date" 
-              placeholder="From" 
+              placeholder="start_date" 
               name="start_date" id="start_date"  
             />
             <label for="start_date">Start date</label>
@@ -101,14 +96,14 @@
             <input 
               class="form-control" 
               type="date" 
-              placeholder="start date" 
-              name="start_date" id="start_date"  
+              placeholder="end_date" 
+              name="end_date" id="end_date"  
             />
-            <label for="start_date">Start date</label>
+            <label for="end_date">End date</label>
           </div>
           <button type="submit" class="btn btn-primary">Search</button>
         </form>
-      </div> --}}
+      </div>
       <table class="table invoice-table" id='example'>
         <thead>
           <tr>
@@ -154,11 +149,6 @@
       </table>
     </div>
   </div>
-
-  @else
-  <h5>This Section is for Authorized uses!</h5>
-@endif
-
 
 @endsection
 
@@ -228,7 +218,7 @@
     $('.invoice-table').DataTable({
       dom: 'frtipB', 
       buttons: [
-        // 'excel', 
+        'excel', 
         // 'print'
       ],
       initComplete: function () {

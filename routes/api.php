@@ -31,28 +31,31 @@ Route::post('/readings', function (Request $request) {
         $dataArray = $request->input('data');
 
         foreach ($dataArray as $data){
-            $customer = Customer::find($data['customer_id']);
+            $customer = Customer::find($data['customer_id'])->with('lastReading')->first();
 
             if($customer){
-                $charges = 0;
-                foreach ($customer->category->tariffs as $tariff) {
-                    $charges += $tariff->amount;
+                if($customer->lastReading != $data['value']){
+                    $charges = 0;
+                    foreach ($customer->category->tariffs as $tariff) {
+                        $charges += $tariff->amount;
+                    }
+        
+                    $reading = new Reading();
+                    $reading->meter_id = $data['meter_id'];
+                    $reading->value = $data['value'];
+                    $reading->previous = $data['previous'];
+                    $reading->date = Carbon::now();
+                    $reading->source = 'mobile app';
+                    $reading->billing_officer = 'Pisa';
+                    $reading->save();
+
+                    $difference = $data['value'] - $data['previous'];
+                    $amount = ($difference * $customer->category->tariff) + $charges;
+                  
+                    $paid = 0;
+                    $remaining = $amount - $paid;
                 }
     
-                $reading = new Reading();
-                $reading->meter_id = $data['meter_id'];
-                $reading->value = $data['value'];
-                $reading->previous = $data['previous'];
-                $reading->date = Carbon::now();
-                $reading->source = 'mobile app';
-                $reading->save();
-    
-                $difference = $data['value'] - $data['previous'];
-                $amount = ($difference * $customer->category->tariff) + $charges;
-              
-                $paid = 0;
-                $remaining = $amount - $paid;
-        
                 $payment = new Payment();
                 $payment->tariff = $customer->category->tariff;
                 $payment->amount = $amount;
@@ -69,6 +72,7 @@ Route::post('/readings', function (Request $request) {
         
                 $customer->credit += $remaining + $charges;
                 $customer->save();
+        
             }
         }
     

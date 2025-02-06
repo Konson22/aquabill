@@ -133,23 +133,23 @@
     <form method="POST" action="{{ route('customers.store') }}">
                     @csrf
                     <div class="form-floating form-floating-outline mb-3">
-                        <input class="form-control" type="text" placeholder="Write the first name .." name="first_name" id="first_name" />
+                        <input class="form-control" type="text" required placeholder="Write the first name .." name="first_name" id="first_name" />
                         <label for="first_name">First Name</label>
                     </div>
                     <div class="form-floating form-floating-outline mb-3">
-                        <input class="form-control" type="text" placeholder="Write the last name .." name="last_name" id="last_name" />
+                        <input class="form-control" type="text" required placeholder="Write the last name .." name="last_name" id="last_name" />
                         <label for="last_name">Last Name</label>
                     </div>
                     <div class="form-floating form-floating-outline mb-3">
-                        <input class="form-control" type="text" placeholder="Write Phone number .." name="phone" id="phone" />
+                        <input class="form-control" type="text" required placeholder="Write Phone number .." name="phone" id="phone" />
                         <label for="phone">Phone</label>
                     </div>
                     <div class="form-floating form-floating-outline mb-3">
-                        <input class="form-control" type="text" placeholder="Write email address .." name="email" id="email" />
+                        <input class="form-control" type="text" required placeholder="Write email address .." name="email" id="email" />
                         <label for="email">Email Address</label>
                     </div>
                     <div class="form-floating form-floating-outline mb-4">
-        <select id="category_id" name="category_id" class="form-select form-select-sm" aria-label="Choose Category">
+        <select id="category_id" required name="category_id" class="form-select form-select-sm" aria-label="Choose Category">
             <option selected>Choose category</option>
             @foreach($categories as $category)
                 <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -157,11 +157,11 @@
         </select>
     </div>
                     <div class="form-floating form-floating-outline mb-3">
-                        <input class="form-control" type="number" placeholder="Write the contract no." name="contract" id="contract" />
+                        <input class="form-control" type="number" required placeholder="Write the contract no." name="contract" id="contract" />
                         <label for="contract">Contract no.</label>
                     </div>
                     <div class="form-floating form-floating-outline mb-3">
-                        <input class="form-control" type="date" placeholder="Select a date" name="date" id="date" />
+                        <input class="form-control" type="date" required placeholder="Select a date" name="date" id="date" />
                         <label for="date">Contract Date</label>
                     </div>
                     <button type="submit" class="btn btn-primary mb-3">Create Customer</button>

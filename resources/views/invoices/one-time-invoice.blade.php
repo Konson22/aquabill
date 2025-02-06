@@ -1,3 +1,6 @@
+@php
+  use Illuminate\Support\Facades\Auth;
+@endphp
 @extends('layouts/layoutMaster')
 
 @section('title', 'One Time Invoice')
@@ -54,6 +57,11 @@
         height: 50px;
     }
 
+.signiture{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
     .my-container{
         margin-bottom: 20px;
         font-size: 14px;
@@ -121,6 +129,77 @@
             <div class="flex-1">
                 <div class="item-wraper">
                     CUS NAME
+                    <span class="flex-1 d-flex justify-content-end">{{$customer->first_name}}</span>
+                </div>
+                <div class="item-wraper">
+                    CONTACT
+                    <span class="flex-1 d-flex justify-content-end">{{$customer->phone}}</span>
+                </div>
+                <div class="item-wraper">
+                    CUS TYPE
+                    <span class="flex-1 d-flex justify-content-end">{{$category->name}}</span>
+                </div>
+            </div>
+            <div class="flex-1 center-content">
+                <div class="item-wraper">
+                    AREA
+                    <span class="flex-1 d-flex justify-content-end">{{$location->name}}</span>
+                </div>
+                <div class="item-wraper">
+                    HOUSE NO
+                    <span class="flex-1 d-flex justify-content-end">{{$location->number}}</span>
+                </div>
+                <div class="item-wraper">
+                    Tariff
+                    <span class="flex-1 d-flex justify-content-end">{{$payment->tariff}}</span>
+                </div>
+            </div>
+            <div class="flex-1">
+                <div class="item-wraper">
+                    AMOUNT PAID
+                    <span class="flex-1 d-flex justify-content-end">{{$payment->paid}}</span>
+                </div>
+                <div class="item-wraper">
+                    ISSUE DATE
+                    <span class="flex-1 d-flex justify-content-end">{{$payment->date}}</span>
+                </div>
+                <div class="item-wraper">
+                    DESCRIPTION
+                    <span class="flex-1 d-flex justify-content-end">{{$payment->description}}</span>
+                </div>
+                <div class="item-wraper">
+                    TOTAL AMOUNT:
+                    <span class="flex-1 d-flex justify-content-end">{{$payment->amount}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="flex-1 signiture">
+                {{ Auth::user()->name }}
+                <p class="sign">Sign:Billing Officer</p>
+            </div>
+            <div class="flex-1 center-content"></div>
+            <div class="flex-1">
+                {{-- <div class="item-wraper">
+                    charges
+                    <span class="flex-1">{{$payment->charges}}</span>
+                </div> --}}
+                <div class="item-wraper">
+                    TOTAL BILL
+                    <span class="flex-1 d-flex justify-content-end">{{$payment->charges + $payment->amount}}</span>
+                </div>
+               
+                <div class="item-wraper">
+                    OUTSTANDING
+                    <span class="flex-1 d-flex justify-content-end">{{$payment->remaining}}</span>
+                </div>
+                
+            </div>
+        </div>
+        {{-- <div class="d-flex align-items-start justify-content-between">
+            <div class="flex-1">
+                <div class="item-wraper">
+                    CUS NAME
                     <span class="flex-1">{{$customer->first_name}}</span>
                 </div>
                 <div class="item-wraper">
@@ -131,7 +210,6 @@
                     CUS TYPE
                     <span class="flex-1">{{$category->name}}</span>
                 </div>
-                
             </div>
             <div class="flex-1 center-content">
                 <div class="item-wraper">
@@ -147,38 +225,8 @@
                     <span class="flex-1">{{$payment->tariff}}</span>
                 </div>
             </div>
-            <div class="flex-1">
-                <div class="item-wraper">
-                    date
-                    <span class="flex-1">{{$payment->date}}</span>
-                </div>
-                <div class="item-wraper">
-                    description
-                    <span class="flex-1">{{$payment->description}}</span>
-                </div>
-                <div class="item-wraper">
-                    amount:
-                    <span class="flex-1">{{$payment->amount}}</span>
-                </div>
-                <div class="item-wraper">
-                    charges
-                    <span class="flex-1">{{$payment->charges}}</span>
-                </div>
-                <div class="item-wraper">
-                    TOTAL
-                    <span class="flex-1">{{$payment->charges + $payment->amount}}</span>
-                </div>
-                <div class="item-wraper">
-                    paid
-                    <span class="flex-1">{{$payment->paid}}</span>
-                </div>
-                <div class="item-wraper">
-                    balance
-                    <span class="flex-1">{{$payment->remaining}}</span>
-                </div>
-                
-            </div>
-        </div>
+           
+        </div> --}}
         <ul>
             <li>Make the settlement of water bills monthly and take care of water tape in your primese.</li>
             <li>To report to Juba-Station management in case of damage or inquery Call:+211924500109/+211924600108</li>

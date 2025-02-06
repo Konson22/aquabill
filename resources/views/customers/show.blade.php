@@ -812,20 +812,22 @@
     <div class="modal-content">
       <form method="POST" action="{{ route('payments.store_one_time_invoice') }}">
         @csrf
+        <input type="hidden" name="billing_officer" id="billing_officer" value="{{ Auth::user()->name }}">
         <input type="hidden" name="customer_id" id="customer_id" value="{{ $customer->id }}">
         <input type="hidden" name="meter_id" id="meter_id" value="{{ $customer->meter_id }}">
+        <input type="hidden" id="status" name="status" value="Paid">
         <input type="hidden" name="source" id="source" value="web">
         <div class="modal-header">
           <h5 class="modal-title" id="createInvoiceModalLabel">Create One Time Invoice</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <div class="row g-4">
+          {{-- <div class="row g-4">
             <div class="col mb-2">
               <input class="form-check-input" type="checkbox" id="status" name="status" value="Paid" {{ isset($payment) && $payment->status == 'Paid' ? 'checked' : '' }}>
               <label class="form-check-label" for="status">Paid</label>
             </div>
-          </div>
+          </div> --}}
           <div class="row g-4">
             <div class="col mb-2">
               <label for="amount" class="form-label">Amount</label>
@@ -893,6 +895,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+        <input type="hidden" name="billing_officer" id="billing_officer" value="{{ Auth::user()->name }}">
         <input type="hidden" name="meter_id" id="meter_id" value="{{ $customer->meter_id }}">
         <input type="hidden" name="tariff" id="tariff" value="{{ $customer->category->tariff ?? 0}}">
         <input type="hidden" name="method" id="method" value="Cash">

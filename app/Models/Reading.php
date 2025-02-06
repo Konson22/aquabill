@@ -14,6 +14,7 @@ class Reading extends Model
         'previous',
         'meter_id',
         'source',
+        'billing_officer',
         'date',
     ];
 

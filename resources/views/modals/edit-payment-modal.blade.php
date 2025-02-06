@@ -14,12 +14,13 @@
           <!-- Hidden fields -->
           <input type="hidden" name="customer_id" value="{{ $payment->customer_id }}">
           <input type="hidden" name="reading_id" value="{{ $payment->reading_id }}">
+          <input type="hidden" id="status" name="status" value="Paid" {{ $payment->status == 'Paid' ? 'checked' : 'Paid' }}>
 
           <!-- Status -->
-          <div class="col mb-2 form-check ">
-            <input class="form-check-input" type="checkbox" id="status" name="status" value="Paid" {{ $payment->status == 'Paid' ? 'checked' : '' }}>
+          {{-- <div class="col mb-2 form-check ">
+            <input class="form-check-input" type="checkbox" id="status" name="status" value="Paid" {{ $payment->status == 'Paid' ? 'checked' : 'Paid' }}>
             <label class="form-check-label" for="status">Paid</label>
-          </div>
+          </div> --}}
           <div class="row g-4">
             <!-- Method -->
             <div class="col mb-2">

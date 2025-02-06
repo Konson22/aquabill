@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('meter_id');
             $table->foreign('meter_id')->references('id')->on('meters')->onDelete('cascade');
             $table->string('source', 255)->notNull();
+            $table->string('billing_officer', 255)->nullable();
             $table->date('date')->nullable();
             $table->timestamps();
         });

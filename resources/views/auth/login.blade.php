@@ -25,8 +25,8 @@ $customizerHidden = 'customizer-hide';
   <div class="authentication-inner row m-0">
     <!-- /Left Section -->
     <div class="d-none d-lg-flex col-lg-7 col-xl-8 align-items-center justify-content-center p-12 pb-2">
-      <img src="{{asset('assets/img/illustrations/auth-basic-login-mask-'.$configData['style'].'.png') }}" class="auth-cover-illustration w-100" alt="auth-illustration" data-app-light-img="illustrations/auth-basic-login-mask-light.png" data-app-dark-img="illustrations/auth-basic-login-mask-dark.png" />
-      <img src="{{asset('assets/img/illustrations/misc-bg-'.$configData['style'].'.png') }}" class="authentication-image" alt="mask" data-app-light-img="illustrations/auth-cover-login-mask-light.png" data-app-dark-img="illustrations/auth-cover-login-mask-dark.png" />
+      <img src="{{asset('assets/img/illustrations/misc-error-illustration.png') }}" class="" alt="auth-illustration" style="height: 70vh;" data-app-light-img="illustrations/misc-error-illustration.png" data-app-dark-img="illustrations/misc-error-illustration.png" />
+      {{-- <img src="{{asset('assets/img/illustrations/misc-bg-'.$configData['style'].'.png') }}" class="authentication-image" alt="mask" data-app-light-img="illustrations/auth-cover-login-mask-light.png" data-app-dark-img="illustrations/auth-cover-login-mask-dark.png" /> --}}
     </div>
     <!-- /Left Section -->
 
