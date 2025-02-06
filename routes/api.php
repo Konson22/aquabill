@@ -87,3 +87,5 @@ Route::middleware('auth:sanctum')->group(function () {
         return response()->json(['message' => 'Welcome to the API Dashboard']);
     });
 });
+
+
