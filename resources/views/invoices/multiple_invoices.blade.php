@@ -193,7 +193,7 @@
                 </div>
                 <div class="d-flex align-items-en justify-content-between">
                     <div class="flex-1">
-                        {{ $payment->reading->billing_officer }}
+                        {{ $payment->reading->billing_officer ?? ''}}
                         <p class="sign">Sign:Billing Officer</p>
                     </div>
                     <div class="flex-1"></div>

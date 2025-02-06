@@ -29,10 +29,6 @@
             <td>{{($payment->reading->value - $payment->reading->previous) * $payment->tariff}} SSP</td>
           </tr>
           <tr>
-            <td>Charges:</td>
-            <td>{{ $payment->charges ?? 'No data' }} SSP</td>
-          </tr>
-          <tr>
             <td>Total bill:</td>
             <td>{{ $payment->amount + $payment->charges ?? 'No data' }} SSP</td>
           </tr>
@@ -40,7 +36,14 @@
             <td>Amount paid:</td>
             <td>{{ $payment->paid ?? 'No data' }} SSP</td>
           </tr>
-        
+          <tr>
+            <td>Reading Collection date:</td>
+            <td>{{ $payment->date ?? 'No data' }} SSP</td>
+          </tr>
+          <tr>
+            <td>Billing officer Reading:</td>
+            <td>{{$payment->reading->billing_officer}}</td>
+          </tr>
         </table>
         {{-- <div class="row g-4">
          

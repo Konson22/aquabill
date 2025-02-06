@@ -178,7 +178,7 @@
         </div>
         <div class="d-flex align-items-end justify-content-between">
             <div class="flex-1">
-                {{ $reading->billing_officer }}
+                {{ $reading->billing_officer ?? '' }}
                 <p class="sign">Sign:Billing Officer</p>
             </div>
             <div class="flex-1"></div>

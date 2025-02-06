@@ -13,6 +13,9 @@ use App\Models\Payment;
 use App\Models\Category;
 
 Route::get('/customers', function () {
+    $customer = Customer::find(1);
+
+    // dd($customer->lastReading->value != 10);
     $customers = Customer::whereNotNull(['meter_id'])->with([
         'location',
         'lastReading',
@@ -24,17 +27,17 @@ Route::get('/customers', function () {
 
 Route::post('/readings', function (Request $request) {
     try {
+
         $request->validate([
             'data' => 'required|array',
+            'name' => 'required|string',
         ]);
-    
-        $dataArray = $request->input('data');
 
         foreach ($dataArray as $data){
             $customer = Customer::find($data['customer_id'])->with('lastReading')->first();
 
             if($customer){
-                if($customer->lastReading != $data['value']){
+                if($customer->lastReading->value != $data['value']){
                     $charges = 0;
                     foreach ($customer->category->tariffs as $tariff) {
                         $charges += $tariff->amount;
@@ -46,12 +49,10 @@ Route::post('/readings', function (Request $request) {
                     $reading->previous = $data['previous'];
                     $reading->date = Carbon::now();
                     $reading->source = 'mobile app';
-                    $reading->billing_officer = 'Pisa';
+                    $reading->billing_officer = $request->input('name');
                     $reading->save();
-
                     $difference = $data['value'] - $data['previous'];
                     $amount = ($difference * $customer->category->tariff) + $charges;
-                  
                     $paid = 0;
                     $remaining = $amount - $paid;
                 }
@@ -69,14 +70,12 @@ Route::post('/readings', function (Request $request) {
                 $payment->remaining = $remaining + $charges;
                 $payment->updated_at = null;
                 $payment->save();
-        
                 $customer->credit += $remaining + $charges;
                 $customer->save();
-        
             }
         }
     
-        return response()->json(['status' => true]);
+        return response()->json(['status' => $dataArray]);
 
     } catch (\Throwable $th) {
         throw $th;
