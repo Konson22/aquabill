@@ -170,22 +170,24 @@
                         </div>
                     </div>
                     <div class="flex-1">
-                        <div class="item-wraper">
-                            TARIFF
-                            <span class="flex-1">{{$payment->customer->category->tariff ?? null}}</span>
+                    <div class="item-wraper">
+                            OUTSTANDING
+                            <span class="flex-1">{{$payment->remaining}}</span>
                         </div>
-                        <div class="item-wraper">
+                         <div class="item-wraper">
                             FIXED CHARGES:
                             <span class="flex-1">{{ $payment->charges}}</span>
                         </div>
                         <div class="item-wraper">
+                            TARIFF
+                            <span class="flex-1">{{$payment->customer->category->tariff ?? null}}</span>
+                        </div>
+                       
+                        <div class="item-wraper">
                             VOLUMETRIC CHARGES
                             <span class="flex-1">{{$payment->amount}}</span>
                         </div>
-                        <div class="item-wraper">
-                            TOTAL BILL
-                            <span class="flex-1">{{ $payment->charges + $payment->amount}}</span>
-                        </div>
+                       
                     </div>
                 </div>
                 <div class="d-flex align-items-end justify-content-between">
@@ -196,17 +198,17 @@
                     <div class="flex-1">
                         <div class="item-wraper">
                             PAID
-                            <span class="flex-1">{{$payment->paid}}</span>
+                            <span class="flex-1 text-right">{{$payment->paid}}</span>
                         </div>
                         <div class="item-wraper">
-                            OUTSTANDING
-                            <span class="flex-1">{{$payment->remaining}}</span>
+                            TOTAL BILL
+                            <span class="flex-1">{{ $payment->charges + $payment->amount}}</span>
                         </div>
                     </div>
                 </div>
                 <ul>
                     <li>Make the settlement of water bills monthly and take care of water tape in your primese.</li>
-                    <li>To report to Juba-Station management in case of damage or inquery Call:+211924500109/+211924600108</li>
+                    <li>To report to Juba-Station management in case of damage or inquery Call:+211929928736/+211929928737</li>
                 </ul>
             </div>
                 @if($loop->iteration % 3 === 0 && !$loop->last)
