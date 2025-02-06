@@ -31,8 +31,6 @@ class ReadingController extends Controller
      */
     public function store(Request $request)
     {
-        $dt = $request->input('date');
-        dd($dt);
         
         $customer = Customer::find($request->input('customer_id'));
         $charges = 0;

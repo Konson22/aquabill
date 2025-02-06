@@ -131,7 +131,7 @@ class InvoicesController extends Controller
         $customerName = $payment->customer->last_name;
         $paymentDate = Carbon::parse($payment->date)->format('d-m-Y');
 
-        // dd($payment);
+        // dd($paymentDate);
 
         return view('invoices.print', compact(
             'payment', 
@@ -170,7 +170,6 @@ class InvoicesController extends Controller
         ->get();
 
         $totalInvoices = Payment::count();
-        // dd($payments);
 
         return view('invoices.multiple_invoices', compact(
             'payments', 

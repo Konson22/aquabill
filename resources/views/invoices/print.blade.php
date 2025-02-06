@@ -119,12 +119,12 @@
         <div class="d-flex align-items-start justify-content-between">
             <div class="flex-1">
                 <div class="item-wraper">
-                    CUS NAME
-                    <span class="flex-1 d-flex justify-content-end">{{$payment->customer->first_name}}</span>
+                    CUSTOMER NAME
+                    <span class="flex-1 d-flex justify-content-end">{{$payment->customer->first_name}} {{$payment->customer->last_name}}</span>
                 </div>
                 <div class="item-wraper">
-                    CUS TYPE
-                    <span class="flex-1 d-flex justify-content-end">{{$category->name}}</span>
+                    CUSTOMER TYPE
+                    <span class="flex-1 d-flex justify-content-end">{{$category->name ?? 'No Data'}}</span>
                 </div>
                 <div class="item-wraper">
                     AREA:
@@ -137,16 +137,16 @@
             </div>
             <div class="flex-1 center-content">
                 <div class="item-wraper">
-                    DATE
-                    <span class="flex-1 d-flex justify-content-end"> {{ date("F d, Y", strtotime($payment->paymentDate)) }}</span>
+                    READING DATE
+                    <span class="flex-1 d-flex justify-content-end"> {{ date("F d, Y", strtotime($payment->date)) }}</span>
                 </div>
                 <div class="item-wraper">
-                    INITIAL READING
-                    <span class="flex-1 d-flex justify-content-end">{{$reading->previous}}</span>
+                    PREVIOUS READING
+                    <span class="flex-1 d-flex justify-content-end">{{$reading->previous ?? 'No Data'}}</span>
                 </div>
                 <div class="item-wraper">
                     CURRENT READING
-                    <span class="flex-1 d-flex justify-content-end">{{$reading->value}}</span>
+                    <span class="flex-1 d-flex justify-content-end">{{$reading->value ?? 'No Data'}}</span>
                 </div>
                 <div class="item-wraper">
                     CONSUMPTION
@@ -155,22 +155,25 @@
             </div>
             <div class="flex-1">
                 <div class="item-wraper">
-                    TARIFF
-                    <span class="flex-1 d-flex justify-content-end">{{$category->tariff}} SSP</span>
+                    OUTSTANDING
+                    <span class="flex-1 d-flex justify-content-end">{{$payment->remaining ?? 'No Data'}} SSP</span>
                 </div>
                 <div class="item-wraper">
                     FIXED CHARGES:
-                    <span class="flex-1 d-flex justify-content-end">{{$payment->charges}} SSP</span>
-                    {{-- <span class="flex-1">{{$fixedServiceCharge}} SSP</span> --}}
+                    <span class="flex-1 d-flex justify-content-end">{{$payment->charges ?? 'No Data'}} SSP</span>
+                </div>
+                <div class="item-wraper">
+                    TARIFF
+                    <span class="flex-1 d-flex justify-content-end">{{$category->tariff ?? 'No Data'}} SSP</span>
                 </div>
                 <div class="item-wraper">
                     VOLUMETRIC CHARGES
-                    <span class="flex-1 d-flex justify-content-end">{{$payment->amount}} SSP</span>
+                    <span class="flex-1 d-flex justify-content-end">{{$payment->amount ?? 'No Data'}} SSP</span>
                 </div>
-                <div class="item-wraper">
-                    TOTAL BILL
-                    <span class="flex-1 d-flex justify-content-end">{{$payment->charges + $payment->amount}} SSP</span>
-                </div>
+                {{-- <div class="item-wraper">
+                    PAID ON DATE
+                    <span class="flex-1 d-flex justify-content-end"> {{ $payment->updated_at ?? '-----' }}</span>
+                </div> --}}
             </div>
         </div>
         <div class="d-flex align-items-end justify-content-between">
@@ -181,12 +184,12 @@
             <div class="flex-1"></div>
             <div class="flex-1">
                 <div class="item-wraper">
-                    TOTAL PAID
+                    AMOUNT PAID
                     <span class="flex-1 d-flex justify-content-end">{{$payment->paid}} SSP</span>
                 </div>
                 <div class="item-wraper">
-                    OUTSTANDING
-                    <span class="flex-1 d-flex justify-content-end">{{$payment->remaining}} SSP</span>
+                    TOTAL BILL
+                    <span class="flex-1 d-flex justify-content-end">{{$payment->charges + $payment->amount}} SSP</span>
                 </div>
             </div>
         </div>
