@@ -192,7 +192,7 @@
         </div>
         <ul>
             <li>Make the settlement of water bills monthly and take care of water tape in your primese.</li>
-            <li>To report to Juba-Station management in case of damage or inquery Call:+211924500109/+211924600108</li>
+            <li>To report to Juba-Station management in case of damage or inquery Call:+211929928736/+211929928737</li>
         </ul>
     </div>
 @endsection

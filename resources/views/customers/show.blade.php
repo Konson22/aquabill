@@ -627,7 +627,7 @@
                 </li>
               </ul>
             </div>
-            @if (Auth::user()->role == 'Admin' OR Auth::user()->department == 'Meters')
+            @if (Auth::user()->role == 'Admin')
               <div class="card-header-elements ms-auto">
                 <div class="dropdown">
                   <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ri-more-2-line"></i></button>
