@@ -67,7 +67,7 @@
   @endforeach
 
   <div class="d-flex align-items-center justify-content-between mb-4">
-    <span class="h3">Invoices ({{ $totalInvoices }})</span>
+    <span class="h3">Water Bill ({{ $totalInvoices }})</span>
     <div class="d-flex align-items-center">
       <label for="scheckAll" class="btn btn-secondary mx-4 d-flex align-items-center">
         <input type="checkbox" id="scheckAll" class="mr-2" />
@@ -112,27 +112,43 @@
       <table class="table invoice-table" id='example'>
         <thead>
           <tr>
-            <th class="">Name</th>
-            <th>Usage (M³)</th>
-            <th>Amount</th>
+          <th>Receipt No</th>
+          <th class="">CUS Name</th>
+          <th>Billing Date</th>
+            
             <th>Outstanding</th>
-            <th>Billing Date</th>
-            <th>Serial</th>
+            
+            <th>Usage (M³)</th>
+            <th>Bill Total</th>
+            <th>Collection Date</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           @foreach($invoices as $payment)
             <tr data-id="{{$payment->id}}">
-              <td>
-                <input type="checkbox" class="row-checkbox" />
-                {{ $payment->customer->first_name }} {{ $payment->customer->last_name }}
-              </td>
+            <td>
+             <input type="checkbox" class="row-checkbox" />
+            	{{ date("dm", strtotime($payment->date)) }}{{ $payment->id }}</td>
+            <td>
+                	{{ $payment->customer->first_name }} {{ $payment->customer->last_name }}
+             	 </td>
+               <td>
+              	
+               	 {{ date("d/m/Y", strtotime($payment->date)) ?? '-----' }}
+               </td>
+              
+            	
+            	<td>{{ $payment->remaining }} SSP</td>
+              	
+          
               <td>{{ $payment->reading->value - $payment->reading->previous }} M³</td>
               <td>{{ $payment->amount }} SSP</td>
-              <td>{{ $payment->remaining }} SSP</td>
-              <td>{{ date("d/m/Y", strtotime($payment->date)) ?? '-----' }}</td>
-              <td>{{ date("dm", strtotime($payment->date)) }}{{ $payment->id }}</td>
+              
+              <td>
+               	 {{ date("d/m/Y", strtotime($payment->updated_at)) ?? '-----' }}
+               </td>
+              
               <td>
                 <a href="{{ route('payments.show', $payment->id) }}" title="View" data-bs-toggle="modal" data-bs-target="#viewPaymentModal{{ $payment->id }}">
                   <i class="ri-fullscreen-line"></i>
@@ -228,7 +244,7 @@
     $('.invoice-table').DataTable({
       dom: 'frtipB', 
       buttons: [
-        // 'excel', 
+        'excel', 
         // 'print'
       ],
       initComplete: function () {
