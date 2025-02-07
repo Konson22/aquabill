@@ -141,11 +141,11 @@
                         <label for="last_name">Last Name</label>
                     </div>
                     <div class="form-floating form-floating-outline mb-3">
-                        <input class="form-control" type="text" required placeholder="Write Phone number .." name="phone" id="phone" />
+                        <input class="form-control" type="text" placeholder="Write Phone number .." name="phone" id="phone" />
                         <label for="phone">Phone</label>
                     </div>
                     <div class="form-floating form-floating-outline mb-3">
-                        <input class="form-control" type="text" required placeholder="Write email address .." name="email" id="email" />
+                        <input class="form-control" type="text" placeholder="Write email address .." name="email" id="email" />
                         <label for="email">Email Address</label>
                     </div>
                     <div class="form-floating form-floating-outline mb-4">

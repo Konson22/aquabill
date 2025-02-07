@@ -50,6 +50,8 @@ Route::post('/readings', function (Request $request) {
                     $lastPayment = $customer->payments->last();
                     $previous_balance = $lastPayment->remaining ?? 0;
                     $Previouse_bill_no = $lastPayment->id;
+                    $lastPayment->status = 'Paid'; 
+                    $lastPayment->save();
                 }
 
                 if($last_reading != $data['value']){

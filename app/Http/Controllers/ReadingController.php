@@ -42,6 +42,8 @@ class ReadingController extends Controller
         if($lastPayment){
             $previous_balance = $lastPayment->remaining ?? 0;
             $Previouse_bill_no = $lastPayment->id;
+            $lastPayment->status = 'Paid'; 
+            $lastPayment->save();
         }
 
         $charges = 0;
@@ -86,7 +88,7 @@ class ReadingController extends Controller
         $payment->date = $request->input('date') ?? Carbon::now();
         $payment->status = $request->input('status');
         $payment->remaining = $remaining;
-        $payment->updated_at = null;
+        $payment->updated_at = Carbon::now();
         $payment->save();
 
         $customer->credit += $remaining;

@@ -99,16 +99,16 @@
 
   <div class="card">
     <div class="card-body customers-card">
-      <table class="table invoice-table font" id='example'>
+      <table class="table table-md invoice-table font" id='example'>
         <thead>
           <tr>
-            <th class="font">Serial</th>
-            <th class="font">Name</th>
-            <th class="font">Prev/Bal</th>
+            <th class="font">Receipt No</th>
+            <th class="font">Cus Name</th>
+            <th class="font">Outstanding</th>
             <th class="font">Amount</th>
             <th class="font">Total Bill</th>
-            <th class="font">Cur/Bal</th>
-            <th class="font">Bill Date</th>
+            <th class="font">Paid</th>
+            <th class="font">Collect Date</th>
             <th class="font no-export">Actions</th>
           </tr>
         </thead>
@@ -125,8 +125,8 @@
               <td>{{ $payment->previous_balance }}</td>
               <td>{{ $payment->amount }} SSP</td>
               <td>{{ $payment->amount + $payment->previous_balance }} SSP</td>
-              <td>{{ $payment->remaining }} SSP</td>
-              <td>{{ date("d/m/Y", strtotime($payment->date)) ?? '-----' }}</td>
+              <td>{{ $payment->paid }} SSP</td>
+              <td>{{ date("d/m/Y", strtotime($payment->updated_at)) ?? '-----' }}</td>
               <td class="no-export">
                 <a class="no-export" href="{{ route('payments.show', $payment->id) }}" title="View" data-bs-toggle="modal" data-bs-target="#viewPaymentModal{{ $payment->id }}">
                   <i class="ri-fullscreen-line"></i>

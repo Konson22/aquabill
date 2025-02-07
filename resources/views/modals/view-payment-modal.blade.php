@@ -33,15 +33,15 @@
             <td>{{ $payment->amount + $payment->charges ?? 'No data' }} SSP</td>
           </tr>
           <tr>
-            <td>Amount paid:</td>
-            <td>{{ $payment->paid ?? 'No data' }} SSP</td>
+            <td>Outstanding:</td>
+            <td>{{ $payment->previous_balance ?? 'No data' }} SSP</td>
           </tr>
           <tr>
             <td>Reading Collection date:</td>
             <td>{{ $payment->date ?? 'No data' }} SSP</td>
           </tr>
           <tr>
-            <td>Billing officer Reading:</td>
+            <td>Billing officer:</td>
             <td>{{$payment->reading->billing_officer}}</td>
           </tr>
         </table>
