@@ -15,6 +15,8 @@ class Payment extends Model
         'tariff',
         'amount',
         'charges',
+        'previous_balance',
+        'Previouse_bill_no',
         'method',
         'paid',
         'date',

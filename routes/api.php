@@ -27,14 +27,17 @@ Route::get('/customers', function () {
 
 Route::post('/readings', function (Request $request) {
     try {
+        
 
         $request->validate([
             'data' => 'required|array',
             'name' => 'required|string',
         ]);
 
+        $dataArray = $request['data'];
+
         foreach ($dataArray as $data){
-            $customer = Customer::find($data['customer_id'])->with('lastReading')->first();
+            $customer = Customer::find($data['customer_id']);
 
             if($customer){
                 if($customer->lastReading->value != $data['value']){
@@ -55,23 +58,24 @@ Route::post('/readings', function (Request $request) {
                     $amount = ($difference * $customer->category->tariff) + $charges;
                     $paid = 0;
                     $remaining = $amount - $paid;
+               
+                    $payment = new Payment();
+                    $payment->tariff = $customer->category->tariff;
+                    $payment->amount = $amount;
+                    $payment->charges = $charges;
+                    $payment->method = 'Cash';
+                    $payment->customer_id = $data['customer_id'];
+                    $payment->reading_id = $reading->id;
+                    $payment->paid = 0;
+                    $payment->date = Carbon::now();
+                    $payment->status = 'Not Paid';
+                    $payment->remaining = $remaining + $charges;
+                    $payment->updated_at = null;
+                    $payment->save();
+                    $customer->credit += $remaining + $charges;
+                    $customer->save();
                 }
     
-                $payment = new Payment();
-                $payment->tariff = $customer->category->tariff;
-                $payment->amount = $amount;
-                $payment->charges = $charges;
-                $payment->method = 'Cash';
-                $payment->customer_id = $data['customer_id'];
-                $payment->reading_id = $reading->id;
-                $payment->paid = 0;
-                $payment->date = Carbon::now();
-                $payment->status = 'Not Paid';
-                $payment->remaining = $remaining + $charges;
-                $payment->updated_at = null;
-                $payment->save();
-                $customer->credit += $remaining + $charges;
-                $customer->save();
             }
         }
     

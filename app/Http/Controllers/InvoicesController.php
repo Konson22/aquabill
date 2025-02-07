@@ -21,10 +21,14 @@ class InvoicesController extends Controller
     function index(Request $request){
 
         // Query payments table
+        $months = Payment::selectRaw('DISTINCT DATE_FORMAT(date, "%M") as month_name, MONTH(date) as month')
+    ->orderBy('month')
+    ->get();
+
         $invoices = Payment::with('customer')->whereNull('description')->get();
         $totalInvoices = $invoices->count();
 	
-        return view('invoices.index', compact('invoices', 'totalInvoices' ));
+        return view('invoices.index', compact('invoices', 'months', 'totalInvoices' ));
     }
 
 

@@ -106,8 +106,8 @@ class CustomerController extends Controller
         ->paginate(12);
 
         $current = Reading::where('meter_id', $meterId)->orderBy('created_at', 'desc')->value('value');
-        $today = date('m-d-Y');
-
+        $today = Carbon::now();
+// dd($today);
         $latestReading = Reading::where('meter_id', $meterId)->orderBy('created_at', 'desc')->first();
 
         $usage = $latestReading ? $latestReading->value - $latestReading->previous : 0;

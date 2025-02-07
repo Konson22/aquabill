@@ -18,11 +18,13 @@ return new class extends Migration
             $table->decimal('charges', 10, 2)->notNull();
             $table->decimal('remaining', 10, 2)->notNull();
             $table->decimal('paid', 10, 2)->notNull();
-            $table->string('method', 255)->notNull();
+            $table->decimal('previous_balance', 10, 2)->notNull();
+            $table->string('Previouse_bill_no', 255)->nullable();
+            $table->string('method', 255)->nullable();
             $table->unsignedBigInteger('customer_id');
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->unsignedBigInteger('reading_id')->nullable();
-        $table->foreign('reading_id')->references('id')->on('readings')->onDelete('cascade');
+            $table->foreign('reading_id')->references('id')->on('readings')->onDelete('cascade');
             $table->date('date')->nullable();
             $table->string('description')->nullable();
             $table->string('status', 255)->notNull();

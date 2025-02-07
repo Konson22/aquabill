@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Reading;
 use App\Models\Payment;
 use App\Models\Customer;
 
-class ReadingController extends Controller
+class ReadingController2 extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,19 +33,7 @@ class ReadingController extends Controller
     {
         
         $customer = Customer::find($request->input('customer_id'));
-        $lastPayment = $customer->payments->last();
-
-        $previous_balance = 0;
-        $Previouse_bill_no = 0;
-
-        if($lastPayment){
-            $previous_balance = $lastPayment->remaining ?? 0;
-            $Previouse_bill_no = $lastPayment->id;
-        }
-
         $charges = 0;
-
-        // dd($Previouse_bill_no);
 
         if ($customer && $customer->category) {
             foreach ($customer->category->tariffs as $tariff) {
@@ -77,19 +64,17 @@ class ReadingController extends Controller
         $payment->tariff = $request->input('tariff');
         $payment->amount = $amount;
         $payment->charges = $charges;
-        $payment->previous_balance = $previous_balance;
-        $payment->Previouse_bill_no = $Previouse_bill_no;
         $payment->method = $request->input('method');
         $payment->customer_id = $request->input('customer_id');
         $payment->reading_id = $reading->id;
         $payment->paid = $request->input('paid');
-        $payment->date = $request->input('date') ?? Carbon::now();
+        $payment->date = $request->input('date');
         $payment->status = $request->input('status');
-        $payment->remaining = $remaining;
+        $payment->remaining = $remaining + $charges;
         $payment->updated_at = null;
         $payment->save();
 
-        $customer->credit += $remaining;
+        $customer->credit += $remaining + $charges;
         $customer->save();
 
         return back()->with('success', 'Reading created successfully.');
@@ -100,7 +85,7 @@ class ReadingController extends Controller
         $difference = $value - $previous;
         $amount = ($difference * $tariff) + $charges;
 
-        return $amount;
+    return $amount;
     }
 
     public function show(string $id)

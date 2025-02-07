@@ -54,8 +54,8 @@
             <!-- Remaining -->
             <div class="col mb-2">
               <label for="remaining" class="form-label">Remaining</label>
-              <input type="text" hidden class="form-control oldBalance" id="oldBalance" value="{{ $payment->remaining }}" readonly>
-              <input type="text" class="form-control remaining" id="remaining" name="remaining" value="{{ $payment->remaining }}" readonly>
+              <input type="text" hidden class="form-control oldBalance" id="oldBalance" value="{{ $payment->amount }}" readonly>
+              <input type="text" class="form-control remaining" id="remaining" name="remaining" value="{{ $payment->amount + $payment->previous_balance }}" readonly>
             </div>
             <!-- Date -->
             <div class="col mb-2">
