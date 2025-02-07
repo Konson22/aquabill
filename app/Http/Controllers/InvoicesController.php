@@ -18,43 +18,48 @@ use App\Models\Tariff;
 
 class InvoicesController extends Controller
 {
+   
+    
     function index(Request $request){
-
-        // Query payments table
-        $months = Payment::selectRaw('DISTINCT DATE_FORMAT(date, "%M") as month_name, MONTH(date) as month')
-    ->orderBy('month')
-    ->get();
-
+        $months = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+        $years = [2021,2023,2024, 2025];
         $invoices = Payment::with('customer')->whereNull('description')->get();
         $totalInvoices = $invoices->count();
 	
-        return view('invoices.index', compact('invoices', 'months', 'totalInvoices' ));
-    }
-
-
-    function filter(Request $request){
-
-        // $startDate = Carbon::parse($request->input('start_date'))->startOfDay();
-        // $endDate = Carbon::parse($request->input('end_date'))->endOfDay();
-
-    // $data = YourModel::whereBetween('created_at', [$startDate, $endDate])->get();
-         // Query payments table
-         $invoices = Payment::with('customer')->whereNull('description')->get();
-         $totalInvoices = $invoices->count();
-     
-         return view('invoices.filter', compact('invoices', 'totalInvoices' ));
+        return view('invoices.index', compact('invoices', 'months', 'totalInvoices', 'years' ));
     }
 
     function specific_month(Request $request){
 
-        $startDate = Carbon::parse($request->input('start_date'))->startOfDay();
-        $endDate = Carbon::parse('d/m/Y', $request->input('end_date'))->endOfDay();
+        $month = Carbon::parse($request->input('month'));
+        $year = Carbon::parse($request->input('year'));
 
-        $invoices = Payment::whereBetween('date', [$startDate, $endDate])->get();
-        // dd(date("d/m/Y", strtotime($request->input('start_date'))));
-        // $invoices = Payment::with('customer')->whereNull('description')->get();
+        $query = Payment::query();
 
-        return view('invoices.specific_month', compact('invoices', 'totalInvoices' ));
+        if ($year) {
+            $query->whereYear('date', $year);
+        }
+
+        if ($month) {
+            $query->whereMonth('date', $month);
+        }
+
+        // Get the results
+        $invoices = $query->get();
+        
+        $totalInvoices = $invoices->count();
+
+        dd($invoices);
+        $years = [2021,2023,2024, 2025];
+        $months = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        return view('invoices.specific_month', compact('invoices', 'years', 'months', 'totalInvoices' ));
     }
     
     public function summary($id){
@@ -202,4 +207,10 @@ class InvoicesController extends Controller
         return view('invoices.one-time-invoice', compact('payment', 'customer', 'location', 'category'));
     }
 
+    function months(){
+        return  $months = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+    }
 }

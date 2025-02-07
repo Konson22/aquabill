@@ -39,7 +39,9 @@
   .dataTables_filter input{
     width: 300px !important;
   }
- 
+  .font{
+    font-size: 13px !important;
+  }
   .customers-card{
     position: relative;
   }
@@ -55,65 +57,52 @@
 @endsection
 
 @section('content')
+
+@if(Auth::user()->role == 'Admin' OR Auth::user()->department == 'Meters')
   @foreach($invoices as $paid)
     @include('modals.edit-payment-modal', ['payment' => $paid])
     @include('modals.view-payment-modal', ['payment' => $paid])
   @endforeach
 
   <div class="d-flex align-items-center justify-content-between mb-4">
-    <span class="h3">Invoices ({{ $totalInvoices }})</span>
+    <span class="h3">Water Bill ({{ $totalInvoices }})</span>
     <div class="d-flex align-items-center">
       <label for="scheckAll" class="btn btn-secondary mx-4 d-flex align-items-center">
         <input type="checkbox" id="scheckAll" class="mr-2" />
         Select All
       </label>
       <button class="btn btn-primary text-white" id="sendSelected" 
-        @if (Auth::user()->role == 'Admin') @else disabled @endif
+        @if (Auth::user()->role == 'Admin' OR Auth::user()->role == 'invoices') @else disabled @endif
       >
         print Selected
       </button>
     </div>
   </div>
 
+  <form id="departmentForm" action="{{ route('invoices.specific_month') }}" method="GET">
+    <select id="department" name="month" class="form-select form-select-sm" aria-label="Choose User Department" onchange="this.form.submit()">
+      <option selected value="">Choose Department</option>
+      @foreach($months as $month)
+        <option value="{{ $month }}">{{ $month }}</option>
+      @endforeach
+    </select>
+  </form>
   
+
   <div class="card">
     <div class="card-body customers-card">
-      <div class="d-flex justify-content-between p-4">
-        <h4>Date Range</h4>
-        <form method="GET" action="{{ route('invoices.specific_month') }}">
-          @csrf
-         
-          <div class="form-floating form-floating-outline">
-            <input 
-              class="form-control" 
-              type="date" 
-              placeholder="start_date" 
-              name="start_date" id="start_date"  
-            />
-            <label for="start_date">Start date</label>
-          </div>
-          <div class="form-floating form-floating-outline mx-2">
-            <input 
-              class="form-control" 
-              type="date" 
-              placeholder="end_date" 
-              name="end_date" id="end_date"  
-            />
-            <label for="end_date">End date</label>
-          </div>
-          <button type="submit" class="btn btn-primary">Search</button>
-        </form>
-      </div>
-      <table class="table invoice-table" id='example'>
+      <table class="table invoice-table font" id='example'>
         <thead>
           <tr>
-            <th class="">Name</th>
-            <th>Usage (M³)</th>
-            <th>Amount</th>
-            <th>Outstanding</th>
-            <th>Billing Date</th>
-            <th>Serial</th>
-            <th>Actions</th>
+            <th class="font">Serial</th>
+            <th class="font">Name</th>
+            <th class="font">Prev/Bal</th>
+            <th class="font">Amount</th>
+            <th class="font">Total Bill</th>
+            <th class="font">Paid</th>
+            <th class="font">Cur/Bal</th>
+            <th class="font">Bill Date</th>
+            <th class="font">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -121,27 +110,31 @@
             <tr data-id="{{$payment->id}}">
               <td>
                 <input type="checkbox" class="row-checkbox" />
-                {{ $payment->customer->first_name }} {{ $payment->customer->last_name }}
+                {{ date("dm", strtotime($payment->date)) }}{{ $payment->id }}
               </td>
-              <td>{{ $payment->reading->value - $payment->reading->previous }} M³</td>
+              <td>
+                {{ $payment->customer->first_name }}
+              </td>
+              <td>{{ $payment->previous_balance }}</td>
               <td>{{ $payment->amount }} SSP</td>
+              <td>{{ $payment->amount + $payment->previous_balance }} SSP</td>
+              <td>{{ $payment->paid }} SSP</td>
               <td>{{ $payment->remaining }} SSP</td>
               <td>{{ date("d/m/Y", strtotime($payment->date)) ?? '-----' }}</td>
-              <td>{{ date("dm", strtotime($payment->date)) }}{{ $payment->id }}</td>
               <td>
                 <a href="{{ route('payments.show', $payment->id) }}" title="View" data-bs-toggle="modal" data-bs-target="#viewPaymentModal{{ $payment->id }}">
                   <i class="ri-fullscreen-line"></i>
                 </a> 
-                @if (Auth::user()->role == 'Admin')
-                  |
-                  <a href="#" title="Pay" data-bs-toggle="modal" 
-                    data-bs-target="#editPaymentModal{{ $payment->id }}">
-                    <i class="ri-hand-coin-line"></i>
-                  </a> 
-                @endif |
                 <a href="/invoices/print/{{$payment->id }}" title="Print" target="_blank">
                   <i class="ri-file-pdf-2-line"></i>
                 </a> 
+                @if (Auth::user()->role == 'Admin' AND $payment->status != 'Paid')
+                |
+                <a href="#" title="Pay" data-bs-toggle="modal" 
+                  data-bs-target="#editPaymentModal{{ $payment->id }}">
+                  <i class="ri-hand-coin-line"></i>
+                </a>  |
+              @endif
               </td>
             </tr>
           @endforeach
@@ -149,6 +142,11 @@
       </table>
     </div>
   </div>
+
+  @else
+  <h5>This Section is for Authorized uses!</h5>
+@endif
+
 
 @endsection
 

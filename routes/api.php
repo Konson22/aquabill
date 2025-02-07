@@ -15,7 +15,6 @@ use App\Models\Category;
 Route::get('/customers', function () {
     $customer = Customer::find(1);
 
-    // dd($customer->lastReading->value != 10);
     $customers = Customer::whereNotNull(['meter_id'])->with([
         'location',
         'lastReading',
@@ -75,11 +74,10 @@ Route::post('/readings', function (Request $request) {
                     $customer->credit += $remaining + $charges;
                     $customer->save();
                 }
-    
             }
         }
     
-        return response()->json(['status' => $dataArray]);
+        return response()->json(['status' => true]);
 
     } catch (\Throwable $th) {
         throw $th;

@@ -65,7 +65,7 @@
   @endforeach
 
   <div class="d-flex align-items-center justify-content-between mb-4">
-    <span class="h3">Invoices ({{ $totalInvoices }})</span>
+    <span class="h3">Water Bill ({{ $totalInvoices }})</span>
     <div class="d-flex align-items-center">
       <label for="scheckAll" class="btn btn-secondary mx-4 d-flex align-items-center">
         <input type="checkbox" id="scheckAll" class="mr-2" />
@@ -79,42 +79,26 @@
     </div>
   </div>
 
-  <select id="department" name="department" class="form-select form-select-sm" aria-label="Choose User Department">
-    <option selected value="">Choose Department</option>
-      @foreach($months as $months)
-        <option value="{{ $months->month_name }}">
-          <a href="/invoices/">{{ $months->month_name }}</a>
-        </option>
+<div class="d-flex justify-content-between">
+  <div class=""></div>
+  <form id="departmentForm" class="d-flex" action="{{ route('invoices.specific_month') }}" method="GET">
+    <select id="department" name="month" class="form-select form-select-md bg-white" aria-label="Choose User Department">
+      <option selected value="">Choose Month</option>
+      @foreach($months as $month)
+        <option value="{{ $month }}">{{ $month }}</option>
       @endforeach
     </select>
+    <select id="year" name="year" class="form-select form-select-md  bg-white" aria-label="Choose Year">
+      <option selected value="">Choose Year</option>
+      @foreach($years as $year)
+        <option value="{{ $year }}">{{ $year }}</option>
+      @endforeach
+    </select>
+    <button class="btn btn-primary" type="submit">Find</button>
+  </form></div>  
 
   <div class="card">
     <div class="card-body customers-card">
-      {{-- <div class="d-flex justify-content-between p-4">
-        <h4>Date Range</h4>
-        <form method="POST" class="d-flex" action="{{ route('invoices.specific_month') }}">
-          @csrf
-          <div class="form-floating form-floating-outline">
-            <input 
-              class="form-control" 
-              type="date" 
-              placeholder="From" 
-              name="start_date" id="start_date"  
-            />
-            <label for="start_date">Start date</label>
-          </div>
-          <div class="form-floating form-floating-outline mx-2">
-            <input 
-              class="form-control" 
-              type="date" 
-              placeholder="start date" 
-              name="start_date" id="start_date"  
-            />
-            <label for="start_date">Start date</label>
-          </div>
-          <button type="submit" class="btn btn-primary">Search</button>
-        </form>
-      </div> --}}
       <table class="table invoice-table font" id='example'>
         <thead>
           <tr>
@@ -123,7 +107,6 @@
             <th class="font">Prev/Bal</th>
             <th class="font">Amount</th>
             <th class="font">Total Bill</th>
-            <th class="font">Paid</th>
             <th class="font">Cur/Bal</th>
             <th class="font">Bill Date</th>
             <th class="font">Actions</th>
@@ -142,7 +125,6 @@
               <td>{{ $payment->previous_balance }}</td>
               <td>{{ $payment->amount }} SSP</td>
               <td>{{ $payment->amount + $payment->previous_balance }} SSP</td>
-              <td>{{ $payment->paid }} SSP</td>
               <td>{{ $payment->remaining }} SSP</td>
               <td>{{ date("d/m/Y", strtotime($payment->date)) ?? '-----' }}</td>
               <td>
@@ -157,8 +139,8 @@
                 <a href="#" title="Pay" data-bs-toggle="modal" 
                   data-bs-target="#editPaymentModal{{ $payment->id }}">
                   <i class="ri-hand-coin-line"></i>
-                </a> 
-              @endif |
+                </a>  |
+              @endif
               </td>
             </tr>
           @endforeach
@@ -167,27 +149,43 @@
       {{-- <table class="table invoice-table" id='example'>
         <thead>
           <tr>
-            <th class="">Name</th>
-            <th>Usage (M³)</th>
-            <th>Amount</th>
+          <th>Receipt No</th>
+          <th class="">CUS Name</th>
+          <th>Billing Date</th>
+            
             <th>Outstanding</th>
-            <th>Billing Date</th>
-            <th>Serial</th>
+            
+            <th>Usage (M³)</th>
+            <th>Bill Total</th>
+            <th>Collection Date</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           @foreach($invoices as $payment)
             <tr data-id="{{$payment->id}}">
-              <td>
-                <input type="checkbox" class="row-checkbox" />
-                {{ $payment->customer->first_name }} {{ $payment->customer->last_name }}
-              </td>
+            <td>
+             <input type="checkbox" class="row-checkbox" />
+            	{{ date("dm", strtotime($payment->date)) }}{{ $payment->id }}</td>
+            <td>
+                	{{ $payment->customer->first_name }} {{ $payment->customer->last_name }}
+             	 </td>
+               <td>
+              	
+               	 {{ date("d/m/Y", strtotime($payment->date)) ?? '-----' }}
+               </td>
+              
+            	
+            	<td>{{ $payment->remaining }} SSP</td>
+              	
+          
               <td>{{ $payment->reading->value - $payment->reading->previous }} M³</td>
               <td>{{ $payment->amount }} SSP</td>
-              <td>{{ $payment->remaining }} SSP</td>
-              <td>{{ date("d/m/Y", strtotime($payment->date)) ?? '-----' }}</td>
-              <td>{{ date("dm", strtotime($payment->date)) }}{{ $payment->id }}</td>
+              
+              <td>
+               	 {{ date("d/m/Y", strtotime($payment->updated_at)) ?? '-----' }}
+               </td>
+              
               <td>
                 <a href="{{ route('payments.show', $payment->id) }}" title="View" data-bs-toggle="modal" data-bs-target="#viewPaymentModal{{ $payment->id }}">
                   <i class="ri-fullscreen-line"></i>

@@ -114,7 +114,7 @@
 @section('content')
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4>Invoice Preview</h4>
+        <h4>Water Bill</h4>
         <button class="btn btn-primary" onclick="printDiv('printable-onetime-area')">Print Bill</button>
     </div>
     <div class="my-container" id="printable-onetime-area">
@@ -155,21 +155,17 @@
                 </div>
             </div>
             <div class="flex-1">
-                <div class="item-wraper">
-                    AMOUNT PAID
-                    <span class="flex-1 d-flex justify-content-end">{{$payment->paid}}</span>
-                </div>
-                <div class="item-wraper">
-                    ISSUE DATE
+              <div class="item-wraper">
+                    BILLING DATE
                     <span class="flex-1 d-flex justify-content-end">{{$payment->date}}</span>
                 </div>
-                <div class="item-wraper">
+               <div class="item-wraper">
+                    OTHER CHARGES
+                    <span class="flex-1 d-flex justify-content-end">{{$payment->charges + $payment->amount}}</span>
+                </div>
+                 <div class="item-wraper">
                     DESCRIPTION
                     <span class="flex-1 d-flex justify-content-end">{{$payment->description}}</span>
-                </div>
-                <div class="item-wraper">
-                    TOTAL AMOUNT:
-                    <span class="flex-1 d-flex justify-content-end">{{$payment->amount}}</span>
                 </div>
             </div>
         </div>
@@ -180,20 +176,12 @@
             </div>
             <div class="flex-1 center-content"></div>
             <div class="flex-1">
-                {{-- <div class="item-wraper">
-                    charges
-                    <span class="flex-1">{{$payment->charges}}</span>
-                </div> --}}
-                <div class="item-wraper">
-                    TOTAL BILL
-                    <span class="flex-1 d-flex justify-content-end">{{$payment->charges + $payment->amount}}</span>
-                </div>
                
-                <div class="item-wraper">
-                    OUTSTANDING
-                    <span class="flex-1 d-flex justify-content-end">{{$payment->remaining}}</span>
+              
+                 <div class="item-wraper">
+                    TOTAL AMOUNT:
+                    <span class="flex-1 d-flex justify-content-end">{{$payment->amount}}</span>
                 </div>
-                
             </div>
         </div>
         {{-- <div class="d-flex align-items-start justify-content-between">

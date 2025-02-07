@@ -48,7 +48,7 @@ Route::middleware([
         Route::get('invoices/print/{id}', [InvoicesController::class, 'print'])->name('invoices.print');
         Route::post('invoices/filter', [InvoicesController::class, 'filter'])->name('invoices.filter');
         Route::post('invoices/multiple_invoices', [InvoicesController::class, 'multiple']);
-        Route::post('/invoices/specific_month', [InvoicesController::class, 'specific_month'])->name('invoices.specific_month');
+        Route::get('/invoices/specific_month', [InvoicesController::class, 'specific_month'])->name('invoices.specific_month');
 
         Route::get('settings/deleteUser/{id}', [SettingsController::class, 'deleteUser'])->name('settings.deleteUser');
         Route::get('settings/deleteRole/{id}', [SettingsController::class, 'deleteRole'])->name('settings.deleteRole');

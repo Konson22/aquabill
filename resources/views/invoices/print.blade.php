@@ -101,7 +101,7 @@
 @section('content')
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4>Invoice Preview</h4>
+        <h4>Water Bill</h4>
         <button class="btn btn-primary" onclick="printDiv('printable-area')">Print Bill</button>
     </div>
     <div class="my-container" id="printable-area">
@@ -110,7 +110,7 @@
             <div class="flex-1 text-center">
                 <p class="title-text">
                     SOUTH SUDAN URBAN WATER CORPERATION 
-                    <br /> WATER BILL <br/> Serial No: <span class="text-danger title-text">
+                    <br /> WATER BILL <br/> Receipt No: <span class="text-danger title-text">
                         #{{ date("dm", strtotime($payment->date)) }}{{ $payment->id }}</span>
                 </p>
             </div>
@@ -118,6 +118,10 @@
         </header>
         <div class="d-flex align-items-start justify-content-between">
             <div class="flex-1">
+            <div class="item-wraper">
+                    METER NO
+                    <span class="flex-1 d-flex justify-content-end">{{$reading->meter_id ?? 'No Data'}}</span>
+                </div>
                 <div class="item-wraper">
                     CUSTOMER NAME
                     <span class="flex-1 d-flex justify-content-end">{{$payment->customer->first_name}} {{$payment->customer->last_name}}</span>
@@ -144,6 +148,7 @@
                     PREVIOUS READING
                     <span class="flex-1 d-flex justify-content-end">{{$reading->previous ?? 'No Data'}}</span>
                 </div>
+                 
                 <div class="item-wraper">
                     CURRENT READING
                     <span class="flex-1 d-flex justify-content-end">{{$reading->value ?? 'No Data'}}</span>
@@ -156,7 +161,7 @@
             <div class="flex-1">
                 <div class="item-wraper">
                     OUTSTANDING
-                    <span class="flex-1 d-flex justify-content-end">{{$payment->remaining ?? 'No Data'}} SSP</span>
+                    <span class="flex-1 d-flex justify-content-end">{{$payment->previous_balance ?? 'No Data'}} SSP</span>
                 </div>
                 <div class="item-wraper">
                     FIXED CHARGES:
