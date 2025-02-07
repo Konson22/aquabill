@@ -33,6 +33,8 @@ Route::post('/readings', function (Request $request) {
             'name' => 'required|string',
         ]);
 
+	$dataArray = $request['data'];
+	
         foreach ($dataArray as $data){
             $customer = Customer::find($data['customer_id']);
 
