@@ -34,8 +34,8 @@ class InvoicesController extends Controller
 
     function specific_month(Request $request){
 
-        $month = Carbon::parse($request->input('month'));
-        $year = Carbon::parse($request->input('year'));
+        $monthName = Carbon::parse($request->input('month'));
+        $year = $request->input('year');
 
         $query = Payment::query();
 
@@ -43,7 +43,8 @@ class InvoicesController extends Controller
             $query->whereYear('date', $year);
         }
 
-        if ($month) {
+        if ($monthName) {
+            $month = Carbon::parse($monthName)->month;
             $query->whereMonth('date', $month);
         }
 
@@ -52,8 +53,8 @@ class InvoicesController extends Controller
         
         $totalInvoices = $invoices->count();
 
-        dd($invoices);
-        $years = [2021,2023,2024, 2025];
+        // dd($invoices);
+        $years = ['2021','2023','2024', '2025'];
         $months = [
             'January', 'February', 'March', 'April', 'May', 'June',
             'July', 'August', 'September', 'October', 'November', 'December'

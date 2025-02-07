@@ -27,7 +27,6 @@ Route::get('/customers', function () {
 Route::post('/readings', function (Request $request) {
     try {
         
-
         $request->validate([
             'data' => 'required|array',
             'name' => 'required|string',
@@ -37,9 +36,23 @@ Route::post('/readings', function (Request $request) {
 
         foreach ($dataArray as $data){
             $customer = Customer::find($data['customer_id']);
-
+            
             if($customer){
-                if($customer->lastReading->value != $data['value']){
+                $previous_balance = 0;
+                $Previouse_bill_no = 0;
+                $last_reading = 0;
+    
+                if($customer->lastReading){
+                    $last_reading = $customer->lastReading->value;
+                }
+    
+                if($customer->payments){
+                    $lastPayment = $customer->payments->last();
+                    $previous_balance = $lastPayment->remaining ?? 0;
+                    $Previouse_bill_no = $lastPayment->id;
+                }
+
+                if($last_reading != $data['value']){
                     $charges = 0;
                     foreach ($customer->category->tariffs as $tariff) {
                         $charges += $tariff->amount;
@@ -53,7 +66,10 @@ Route::post('/readings', function (Request $request) {
                     $reading->source = 'mobile app';
                     $reading->billing_officer = $request->input('name');
                     $reading->save();
+
+
                     $difference = $data['value'] - $data['previous'];
+
                     $amount = ($difference * $customer->category->tariff) + $charges;
                     $paid = 0;
                     $remaining = $amount - $paid;
@@ -63,6 +79,8 @@ Route::post('/readings', function (Request $request) {
                     $payment->amount = $amount;
                     $payment->charges = $charges;
                     $payment->method = 'Cash';
+                    $payment->previous_balance = $previous_balance;
+                    $payment->Previouse_bill_no = $Previouse_bill_no;
                     $payment->customer_id = $data['customer_id'];
                     $payment->reading_id = $reading->id;
                     $payment->paid = 0;
@@ -71,6 +89,7 @@ Route::post('/readings', function (Request $request) {
                     $payment->remaining = $remaining + $charges;
                     $payment->updated_at = null;
                     $payment->save();
+
                     $customer->credit += $remaining + $charges;
                     $customer->save();
                 }

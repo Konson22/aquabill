@@ -79,15 +79,23 @@
     </div>
   </div>
 
-  <form id="departmentForm" action="{{ route('invoices.specific_month') }}" method="GET">
-    <select id="department" name="month" class="form-select form-select-sm" aria-label="Choose User Department" onchange="this.form.submit()">
-      <option selected value="">Choose Department</option>
+<div class="d-flex justify-content-between">
+  <div class=""></div>
+  <form id="departmentForm" class="d-flex" action="{{ route('invoices.specific_month') }}" method="GET">
+    <select id="department" name="month" class="form-select form-select-sm bg-white" aria-label="Choose User Department">
+      <option selected value="">Choose Month</option>
       @foreach($months as $month)
         <option value="{{ $month }}">{{ $month }}</option>
       @endforeach
     </select>
-  </form>
-  
+    <select id="year" name="year" class="form-select form-select-sm  bg-white" aria-label="Choose Year">
+      <option selected value="">Choose Year</option>
+      @foreach($years as $year)
+        <option value="{{ $year }}">{{ $year }}</option>
+      @endforeach
+    </select>
+    <button class="btn btn-primary" type="submit">Find</button>
+  </form></div>  
 
   <div class="card">
     <div class="card-body customers-card">
@@ -99,10 +107,9 @@
             <th class="font">Prev/Bal</th>
             <th class="font">Amount</th>
             <th class="font">Total Bill</th>
-            <th class="font">Paid</th>
             <th class="font">Cur/Bal</th>
             <th class="font">Bill Date</th>
-            <th class="font">Actions</th>
+            <th class="font no-export">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -118,19 +125,18 @@
               <td>{{ $payment->previous_balance }}</td>
               <td>{{ $payment->amount }} SSP</td>
               <td>{{ $payment->amount + $payment->previous_balance }} SSP</td>
-              <td>{{ $payment->paid }} SSP</td>
               <td>{{ $payment->remaining }} SSP</td>
               <td>{{ date("d/m/Y", strtotime($payment->date)) ?? '-----' }}</td>
-              <td>
-                <a href="{{ route('payments.show', $payment->id) }}" title="View" data-bs-toggle="modal" data-bs-target="#viewPaymentModal{{ $payment->id }}">
+              <td class="no-export">
+                <a class="no-export" href="{{ route('payments.show', $payment->id) }}" title="View" data-bs-toggle="modal" data-bs-target="#viewPaymentModal{{ $payment->id }}">
                   <i class="ri-fullscreen-line"></i>
                 </a> 
-                <a href="/invoices/print/{{$payment->id }}" title="Print" target="_blank">
+                <a class="no-export" href="/invoices/print/{{$payment->id }}" title="Print" target="_blank">
                   <i class="ri-file-pdf-2-line"></i>
                 </a> 
                 @if (Auth::user()->role == 'Admin' AND $payment->status != 'Paid')
                 |
-                <a href="#" title="Pay" data-bs-toggle="modal" 
+                <a class="no-export" href="#" title="Pay" data-bs-toggle="modal" 
                   data-bs-target="#editPaymentModal{{ $payment->id }}">
                   <i class="ri-hand-coin-line"></i>
                 </a>  |
@@ -216,9 +222,14 @@
     $('.invoice-table').DataTable({
       dom: 'frtipB', 
       buttons: [
-        'excel', 
-        // 'print'
-      ],
+    {
+      extend: 'excel',
+      text: 'Export to Excel',
+      exportOptions: {
+        columns: ':not(.no-export)'  // Exclude columns with 'no-export' class
+      }
+    }
+  ],
       initComplete: function () {
         $('div.dataTables_filter input').attr('placeholder', 'Search by name, contract no, meter no');
       },
