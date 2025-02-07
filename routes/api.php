@@ -47,9 +47,9 @@ Route::post('/readings', function (Request $request) {
                 }
     
                 if($customer->payments){
-                    $lastPayment = $customer->payments->last();
+                    $lastPayment = $customer->payments->last() ?? 0;
                     $previous_balance = $lastPayment->remaining ?? 0;
-                    $Previouse_bill_no = $lastPayment->id;
+                    $Previouse_bill_no = $lastPayment->id ?? 0;
                 }
 
                 if($last_reading != $data['value']){
