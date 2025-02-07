@@ -58,10 +58,10 @@
     <button type="button" class="btn btn-primary mx-3" data-bs-toggle="offcanvas" data-bs-target="#newUserModal" aria-controls="newUserModal">
       create user 
     </button>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
+    {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
     data-bs-target="#createRoleModal">
       create new role
-    </button>
+    </button> --}}
   </div>
 </div>
 <hr class="my-6" />
@@ -115,7 +115,7 @@
     </div>
   </div>
   <div class="row p-0 m-0">
-    <div class="col-6">
+    <div class="col-8">
       <div class="card">
         <div class="card-header d-flex align-items-center justify-content-between">
           <h4 class="text-heading mb-1">Departments</h4>
@@ -150,7 +150,7 @@
         </div>
       </div>
     </div>
-    <div class="col-4">
+    {{-- <div class="col-4">
       <div class="card">
         <div class="card-header d-flex align-items-center justify-content-between">
           <h4 class="text-heading mb-1">Roles</h4>
@@ -173,7 +173,7 @@
           </table>
         </div>
       </div>
-    </div>
+    </div> --}}
   </div>
 @else
   <div class="">
@@ -214,7 +214,7 @@
         <form id="formAuthentication" class="mb-5" action="{{ route('settings.store') }}" method="POST">
             @csrf
             <div class="form-floating form-floating-outline mb-5">
-              <input type="text" class="form-control @error('name') is-invalid @enderror" id="username" name="name" placeholder="johndoe" autofocus value="{{ old('name') }}">
+              <input type="text" required class="form-control @error('name') is-invalid @enderror" id="username" name="name" placeholder="johndoe" autofocus value="{{ old('name') }}">
               <label for="username">Username</label>
               @error('name')
                 <span class="invalid-feedback" role="alert">
@@ -223,7 +223,7 @@
               @enderror
             </div>
             <div class="form-floating form-floating-outline mb-5">
-              <input type="text" class="form-control @error('email') is-invalid @enderror" id="email" name="email" placeholder="john@example.com" value="{{ old('email') }}">
+              <input type="text" required class="form-control @error('email') is-invalid @enderror" id="email" name="email" placeholder="john@example.com" value="{{ old('email') }}">
               <label for="email">Email</label>
               @error('email')
                 <span class="invalid-feedback" role="alert">
@@ -232,7 +232,7 @@
               @enderror
             </div>
             <div class="form-floating form-floating-outline mb-4">
-              <select id="department" name="department" class="form-select form-select-sm" aria-label="Choose User Department">
+              <select id="department" required name="department" class="form-select form-select-sm" aria-label="Choose User Department">
                 <option selected value="">Choose Department</option>
                 @foreach($departments as $department)
                   <option value="{{ $department->department_name }}">{{ $department->name }}</option>
@@ -241,18 +241,13 @@
               <label for="department">Department</label>
             </div>
             <div class="form-floating form-floating-outline mb-4">
-              <select id="role" name="role" class="form-select form-select-sm" aria-label="Choose User Role">
-                <option selected value="">Choose Role</option>
-                @foreach($roles as $role)
-                  <option value="{{ $role->name }}">{{ $role->name }}</option>
-                @endforeach
-              </select>
+              <input type="text" id="role" required class="form-control @error('role') is-invalid @enderror" name="role" placeholder="Enter user role" aria-describedby="role" />
               <label for="role">Role</label>
             </div>
               <div class="mb-5 form-password-toggle">
               <div class="input-group input-group-merge @error('password') is-invalid @enderror">
                 <div class="form-floating form-floating-outline">
-                  <input type="password" id="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
+                  <input type="password" id="password" required class="form-control @error('password') is-invalid @enderror" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
                   <label for="password">Password</label>
                 </div>
                 <span class="input-group-text cursor-pointer"><i class="ri-eye-off-line"></i></span>
@@ -266,7 +261,7 @@
             <div class="mb-5 form-password-toggle">
               <div class="input-group input-group-merge">
                 <div class="form-floating form-floating-outline">
-                  <input type="password" id="password-confirm" class="form-control" name="password_confirmation" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
+                  <input type="password" required id="password-confirm" class="form-control" name="password_confirmation" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
                   <label for="password-confirm">Confirm Password</label>
                 </div>
                 <span class="input-group-text cursor-pointer"><i class="ri-eye-off-line"></i></span>
