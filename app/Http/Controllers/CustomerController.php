@@ -69,7 +69,20 @@ class CustomerController extends Controller
             'credit' => 'nullable|integer',
         ]);
 
-        $customer = Customer::create($request->all());
+        $customer = Customer::create(
+           [
+            'first_name' => $request->input('first_name'),
+            'last_name' => $request->input('last_name'),
+            'phone' => $request->input('phone'),
+            'email' => $request->input('email'),
+            'location_id' => $request->input('location_id'),
+            'category_id' => $request->input('category_id'),
+            'meter_id' => $request->input('meter_id'),
+            'date' => $request->input('date') ?? Carbon::now(),
+            'contract' => $request->input('contract'),
+           ]
+        );
+
 
         return redirect()->route('customers.show', $customer->id)
         ->with('success', 'Customer account created successfully.');

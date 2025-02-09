@@ -96,7 +96,7 @@ class PaymentController extends Controller
         $request->merge(['status' => $status]);
 
         $payment = Payment::findOrFail($id);
-
+       
 
         $remaining = $payment->remaining - $request->paid;
         $paid = $payment->paid + $request->paid;
@@ -151,6 +151,7 @@ class PaymentController extends Controller
             'description' => 'nullable|string|max:255',
         ]);
 
+
         $payment = new Payment();
         $payment->tariff = 0;
         $payment->amount = $request->amount;
@@ -160,6 +161,7 @@ class PaymentController extends Controller
         $payment->paid = $request->paid;
         $payment->reading_id = null;
         $payment->date = $request->date ?? now();
+        $payment->previous_balance = $request->previous_balance ?? 0;
         $payment->status = $request->status;
         $payment->remaining = $request->remaining;
         $payment->description = $request->description;

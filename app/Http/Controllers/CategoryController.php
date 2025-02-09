@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Tariff;
 
 class CategoryController extends Controller
 {
@@ -80,8 +81,7 @@ class CategoryController extends Controller
             'tariff' => $request->tariff,
         ]);
 
-        return view('categories.index');
-        // return back()->with('success', 'Reading updated successfully.');
+        return view('tariffs.index');
     }
 
     /**
@@ -91,6 +91,6 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
         $category->delete();
-        return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
+        return back()->with('success', 'Payment created successfully.');
     }
 }

@@ -152,7 +152,7 @@
         <select id="category_id" required name="category_id" class="form-select form-select-sm" aria-label="Choose Category">
             <option selected>Choose category</option>
             @foreach($categories as $category)
-                <option value="{{ $category->id }}">{{ $category->name }}</option>
+              <option value="{{ $category->id }}">{{ $category->name }}</option>
             @endforeach
         </select>
     </div>
@@ -161,7 +161,7 @@
                         <label for="contract">Contract no.</label>
                     </div>
                     <div class="form-floating form-floating-outline mb-3">
-                        <input class="form-control" type="date" required placeholder="Select a date" name="date" id="date" />
+                        <input class="form-control" type="date" placeholder="Select a date" name="date" id="date" />
                         <label for="date">Contract Date</label>
                     </div>
                     <button type="submit" class="btn btn-primary mb-3">Create Customer</button>
@@ -181,7 +181,6 @@
           <th>Name</th>
           <th>Phone</th>
           <th>Contract No.</th>
-          {{-- <th>House No.</th> --}}
           <th>Payam</th>
           @if (Auth::user()->role == 'Admin')
           <th>Action</th>
@@ -197,8 +196,6 @@
             </td>
             <td>+211{{ $customer->phone ?? '' }}</td>
             <td>{{ $customer->contract ?? '' }}</td>
-            {{-- <td>{{ $customer->credit ?? '' }}</td> --}}
-            {{-- <td>{{ $customer->location->number ?? 'No Address' }}</td> --}}
             <td>{{ $customer->location->neighborhood->name ?? 'No Area'}}</td>
             @if (Auth::user()->role == 'Admin')
               <td>

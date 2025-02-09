@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Preview Invoice')
+@section('title', 'Print Multiple Invoices')
 
 <!-- Vendor Styles -->
 @section('vendor-style')
@@ -99,137 +99,127 @@
     }
 </style>
 @section('content')
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4>Water Bill</h4>
-        <button class="btn btn-primary" onclick="printDiv('printable-area')">Print Bill</button>
-    </div>
-    <div class="my-container" id="printable-area">
-        <header class="d-flex mb-2">
-            <img class="logo" src="{{ asset('logo.jpg') }}" alt="Logo">
-            <div class="flex-1 text-center">
-                <p class="title-text">
-                    SOUTH SUDAN URBAN WATER CORPERATION 
-                    <br /> WATER BILL <br/> Receipt No: <span class="text-danger title-text">
-                        #{{ date("dm", strtotime($payment->date)) }}{{ $payment->id }}</span>
-                </p>
-            </div>
-            <img class="logo" src="{{ asset('logo.jpg') }}" alt="Logo2">
-        </header>
-        <div class="d-flex align-items-start justify-content-between">
-            <div class="flex-1">
-            <div class="item-wraper">
-                    METER NO
-                    <span class="flex-1 d-flex justify-content-end">{{$reading->meter_id ?? 'No Data'}}</span>
+    <div class="car">
+        <div class="main-wraper" id="print-all">
+            @foreach($payments as $payment)
+                <div class="my-container" id="printable-area">
+                    <header class="d-flex">
+                        <img class="logo" src="{{ asset('logo.jpg') }}" alt="Logo">
+                        <div class="flex-1 text-center">
+                            <p class="title-text">
+                                SOUTH SUDAN URBAN WATER CORPERATION 
+                                <br /> WATER BILL <br/> Receipt No: <span class="text-danger title-text">
+                                    #{{ date("dm", strtotime($payment->date)) }}{{ $payment->id }}</span>
+                            </p>
+                        </div>
+                        <img class="logo" src="{{ asset('logo.jpg') }}" alt="Logo2">
+                    </header>
+                    <div class="d-flex align-items-start justify-content-between">
+                        <div class="flex-1">
+                            <div class="item-wraper">
+                                CUSTOMER NAME
+                                <span class="flex-1 d-flex justify-content-end">{{$payment->customer->first_name}} {{$payment->customer->last_name}}</span>
+                            </div>
+                            <div class="item-wraper">
+                                CUSTOMER TYPE
+                                <span class="flex-1 d-flex justify-content-end">{{$payment->customer->category->name ?? null}}</span>
+                            </div>
+                            <div class="item-wraper">
+                                AREA:
+                                <span class="flex-1 d-flex justify-content-end">
+                                    @if ($payment->customer->location)
+                                        {{$payment->customer->location->address}}
+                                    @else
+                                        ---
+                                    @endif
+                            </span>
+                            </div>
+                            <div class="item-wraper">
+                                HOUSE NO:
+                                <span class="flex-1 d-flex justify-content-end">
+                                    @if ($payment->customer->location)
+                                        {{$payment->customer->location->number}}
+                                    @else
+                                        ---
+                                    @endif
+                                </span>
+                            </div>
+                        </div>
+                        <div class="flex-1 center-content">
+                            <div class="item-wraper">
+                                DATE
+                                <span class="flex-1 d-flex justify-content-end"> {{ date("F d, Y", strtotime($payment->date)) }}</span>
+                            </div>
+                            <div class="item-wraper">
+                                PREVIOUS READING
+                                <span class="flex-1 d-flex justify-content-end">{{$payment->reading->previous ?? 0}}</span>
+                            </div>
+                            <div class="item-wraper">
+                                CURRENT READING
+                                <span class="flex-1 d-flex justify-content-end">{{$payment->reading->value ?? 0}}</span>
+                            </div>
+                            <div class="item-wraper">
+                                CONSUMPTION
+                                <span class="flex-1 d-flex justify-content-end">{{$payment->reading->value - $payment->reading->previous}} M³</span>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="item-wraper">
+                                OUTSTANDING
+                                <span class="flex-1 d-flex justify-content-end">{{$payment->previous_balance}}</span>
+                            </div>
+                            <div class="item-wraper">
+                                FIXED CHARGES:
+                                <span class="flex-1 d-flex justify-content-end">{{ $payment->charges}}</span>
+                            </div>
+                            <div class="item-wraper">
+                                TARIFF
+                                <span class="flex-1 d-flex justify-content-end">{{$payment->customer->category->tariff ?? null}}</span>
+                            </div>
+                        
+                            <div class="item-wraper">
+                                VOLUMETRIC CHARGES
+                                <span class="flex-1 d-flex justify-content-end">
+                                    {{ ($payment->reading->value - $payment->reading->previous) * $payment->customer->category->tariff }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-en justify-content-between">
+                        <div class="flex-1">
+                            {{ $payment->reading->billing_officer ?? ''}}
+                            <p class="sign">Sign:Billing Officer</p>
+                        </div>
+                        <div class="flex-1"></div>
+                        <div class="flex-1">
+                            <div class="item-wraper">
+                                TOTAL BILL
+                                <span class="flex-1 d-flex justify-content-end">
+                                    {{ $payment->amount + $payment->previous_balance}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <ul>
+                        <li>Make the settlement of water bills monthly and take care of water tape in your primese.</li>
+                        <li>To report to Juba-Station management in case of damage or inquery Call:+211929928736/+211929928737</li>
+                    </ul>
                 </div>
-                <div class="item-wraper">
-                    CUSTOMER NAME
-                    <span class="flex-1 d-flex justify-content-end">{{$payment->customer->first_name}} {{$payment->customer->last_name}}</span>
-                </div>
-                <div class="item-wraper">
-                    CUSTOMER TYPE
-                    <span class="flex-1 d-flex justify-content-end">{{$category->name ?? 'No Data'}}</span>
-                </div>
-                <div class="item-wraper">
-                    AREA:
-                    <span class="flex-1 d-flex justify-content-end">{{$location->address ?? 'No Data'}}</span>
-                </div>
-                <div class="item-wraper">
-                    HOUSE NO:
-                    <span class="flex-1 d-flex justify-content-end">{{$location->number ?? 'No data'}}</span>
-                </div>
-            </div>
-            <div class="flex-1 center-content">
-                <div class="item-wraper">
-                    READING DATE
-                    <span class="flex-1 d-flex justify-content-end"> {{ date("F d, Y", strtotime($payment->date)) }}</span>
-                </div>
-                <div class="item-wraper">
-                    PREVIOUS READING
-                    <span class="flex-1 d-flex justify-content-end">{{$reading->previous ?? 'No Data'}}</span>
-                </div>
-                 
-                <div class="item-wraper">
-                    CURRENT READING
-                    <span class="flex-1 d-flex justify-content-end">{{$reading->value ?? 'No Data'}}</span>
-                </div>
-                <div class="item-wraper">
-                    CONSUMPTION
-                    <span class="flex-1 d-flex justify-content-end">{{$reading->value - $reading->previous}} M³</span>
-                </div>
-            </div>
-            <div class="flex-1">
-                <div class="item-wraper">
-                    OUTSTANDING
-                    <span class="flex-1 d-flex justify-content-end">{{$payment->previous_balance ?? 'No Data'}} SSP</span>
-                </div>
-                <div class="item-wraper">
-                    FIXED CHARGES:
-                    <span class="flex-1 d-flex justify-content-end">{{$payment->charges ?? 'No Data'}} SSP</span>
-                </div>
-                <div class="item-wraper">
-                    TARIFF
-                    <span class="flex-1 d-flex justify-content-end">{{$category->tariff ?? 'No Data'}} SSP</span>
-                </div>
-                <div class="item-wraper">
-                    VOLUMETRIC CHARGES
-                    <span class="flex-1 d-flex justify-content-end">{{$payment->amount ?? 'No Data'}} SSP</span>
-                </div>
-                {{-- <div class="item-wraper">
-                    PAID ON DATE
-                    <span class="flex-1 d-flex justify-content-end"> {{ $payment->updated_at ?? '-----' }}</span>
-                </div> --}}
-            </div>
+                @if($loop->iteration % 3 === 0 && !$loop->last)
+                <div class="page_break"></div>
+                @endif
+            @endforeach
         </div>
-        <div class="d-flex align-items-end justify-content-between">
-            <div class="flex-1">
-                {{ $reading->billing_officer ?? '' }}
-                <p class="sign">Sign:Billing Officer</p>
-            </div>
-            <div class="flex-1"></div>
-            <div class="flex-1">
-                <div class="item-wraper">
-                    AMOUNT PAID
-                    <span class="flex-1 d-flex justify-content-end">{{$payment->paid}} SSP</span>
-                </div>
-                <div class="item-wraper">
-                    TOTAL BILL
-                    <span class="flex-1 d-flex justify-content-end">{{$payment->charges + $payment->amount}} SSP</span>
-                </div>
-            </div>
-        </div>
-        <ul>
-            <li>Make the settlement of water bills monthly and take care of water tape in your primese.</li>
-            <li>To report to Juba-Station management in case of damage or inquery Call:+211929928736/+211929928737</li>
-        </ul>
     </div>
 @endsection
-    <script>
-        function printDiv(divId) {
-            var content = document.getElementById(divId).innerHTML;
-            var originalContent = document.body.innerHTML;
-            document.body.innerHTML = content;
-            window.print();
-            document.body.innerHTML = originalContent;
-        }
 
-        function convertToPDF(divId) {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            // Get the HTML content of the selected div
-            const content = document.getElementById(divId).innerHTML;
+<script>
+    function printDiv(divId) {
+        var content = document.getElementById(divId).innerHTML;
+        var originalContent = document.body.innerHTML;
+        document.body.innerHTML = content;
+        window.print();
+        document.body.innerHTML = originalContent;
+    }
 
-            // Sanitize the HTML content with DOMPurify to prevent any issues
-            const sanitizedContent = DOMPurify.sanitize(content);
-
-            // Use jsPDF's html method to add the div content to the PDF
-            doc.html(sanitizedContent, {
-                callback: function (doc) {
-                    doc.save('div-content.pdf');  // Save the PDF with the name 'div-content.pdf'
-                },
-                x: 10,  // Set the x-coordinate for the content
-                y: 10   // Set the y-coordinate for the content
-            });
-        }
-    </script>
+</script>

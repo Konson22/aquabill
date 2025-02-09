@@ -19,48 +19,83 @@ use App\Models\Tariff;
 class InvoicesController extends Controller
 {
    
-    
     function index(Request $request){
-        $months = [
-            'January', 'February', 'March', 'April', 'May', 'June',
-            'July', 'August', 'September', 'October', 'November', 'December'
-        ];
-        $years = [2021,2023,2024, 2025];
-        $invoices = Payment::with('customer')->whereNull('description')->get();
+
+        $invoices = Payment::with('customer')->whereNull('description')->orderBy('created_at', 'desc')->get();
+
+        $totalBills = $invoices->count();
+        $totalRevenue = $invoices->sum('amount');
+        $totalRemaining = $invoices->sum('remaining');
+        $totalPaid = $invoices->sum('paid');
+        $totalPaidCount = $invoices->where('paid', '!=', 0)->count();
+        $totalunPaidCount = $invoices->where('paid', '==', 0)->count();
+
+
+        $months = $this->months();
+
+        $years = $this->years();
         $totalInvoices = $invoices->count();
 	
-        return view('invoices.index', compact('invoices', 'months', 'totalInvoices', 'years' ));
+        return view('invoices.index', compact(
+            'invoices', 
+            'years', 
+            'months', 
+            'totalInvoices',
+            'totalRevenue', // added
+            'totalBills', //
+            'totalRemaining', // added
+            'totalPaid', // added
+            'totalPaidCount', //
+            'totalunPaidCount',
+        ));
     }
 
     function specific_month(Request $request){
-
+        
         $monthName = Carbon::parse($request->input('month'));
+        $monthTitle =$request->input('month');
         $year = $request->input('year');
 
         $query = Payment::query();
-
         if ($year) {
             $query->whereYear('date', $year);
         }
-
         if ($monthName) {
             $month = Carbon::parse($monthName)->month;
             $query->whereMonth('date', $month);
         }
 
         // Get the results
-        $invoices = $query->get();
+        $invoices = $query->whereNull('description')->get();
         
         $totalInvoices = $invoices->count();
 
-        // dd($invoices);
-        $years = ['2021','2023','2024', '2025'];
-        $months = [
-            'January', 'February', 'March', 'April', 'May', 'June',
-            'July', 'August', 'September', 'October', 'November', 'December'
-        ];
+        $totalBills = $invoices->count();
+        $totalRevenue = $invoices->sum('amount');
+        $totalRemaining = $invoices->sum('remaining');
+        $totalPaid = $invoices->sum('paid');
+        $totalPaidCount = $invoices->where('paid', '!=', 0)->count();
+        $totalunPaidCount = $invoices->where('paid', '==', 0)->count();
+        
+      
+        $months = $this->months();
 
-        return view('invoices.specific_month', compact('invoices', 'years', 'months', 'totalInvoices' ));
+        $years = $this->years();
+
+        return view('invoices.specific_month', compact(
+            'invoices', 
+            'years', 
+            'year',
+            'months', 
+            'monthTitle',
+            'totalInvoices',
+            'totalRevenue', // added
+            'totalBills', //
+            'totalRemaining', // added
+            'totalPaid', // added
+            'totalPaidCount', //
+            'totalunPaidCount',
+        ));
     }
     
     public function summary($id){
@@ -120,58 +155,19 @@ class InvoicesController extends Controller
     public function print($id)
     {
 
-        $payment = Payment::with(['customer.location', 'customer.category'])->find($id);
+        $payments = Payment::where('id', $id)
+        ->with(['customer.location', 'customer.category', 'customer.meters', 'reading', 'tariff'])
+        ->orderBy('created_at', 'desc')->get();
 
-        if (!$payment) {
-            return redirect()->back()->with('error', 'Payment not found.');
-        }
-        
-        $category = Category::find($payment->customer->category_id);
        
-        $reading = Reading::find($payment->reading_id);
-        $consumption = $reading->value - $reading->previous;
-        $location = Location::find($payment->customer->location_id);
-
-        $fixedServiceCharge = 0;
-        $tariff = Tariff::find($payment->customer->category_id);
-        if ($tariff) {
-            $fixedServiceCharge = $tariff->amount;
-        }
-
-        $customerName = $payment->customer->last_name;
-        $paymentDate = Carbon::parse($payment->date)->format('d-m-Y');
 
         // dd($paymentDate);
 
         return view('invoices.print', compact(
-            'payment', 
-            'consumption', 
-            'fixedServiceCharge', 
-            'location', 
-            'category', 
-            'customerName',
-            'reading',
-            'paymentDate'
-        ));
-    }
-
-    function printMultiple(){
-        
-        // Query payments table
-        $query = Payment::query()->with(['customer.location', 'customer.category', 'customer.meters', 'reading']);
-
-        // Paginate the result
-        $payments = $query->paginate(10);
-        $totalInvoices = Payment::count();
-
-
-        dd($payments);
-        return view('invoices.print_multiple_invoices',  compact(
             'payments', 
-            'totalInvoices', 
-            // 'consumption', 
         ));
     }
+
     function multiple(Request $request){
         $selectedIds = $request->input('selected_ids');
         $ids = json_decode($selectedIds, true);
@@ -183,6 +179,22 @@ class InvoicesController extends Controller
 
         return view('invoices.multiple_invoices', compact(
             'payments', 
+            'totalInvoices', 
+        ));
+    }
+   
+   
+    function print_all_one_time_invoice(Request $request){
+        $selectedIds = $request->input('selected_ids');
+        $ids = json_decode($selectedIds, true);
+        $customers = Payment::whereIn('id', $ids)
+        ->with(['customer.location', 'customer.category', 'customer.meters', 'reading', 'tariff'])
+        ->get();
+
+        $totalInvoices = Payment::count();
+
+        return view('invoices.print_all_one_time_invoice', compact(
+            'customers', 
             'totalInvoices', 
         ));
     }
@@ -207,11 +219,50 @@ class InvoicesController extends Controller
 
         return view('invoices.one-time-invoice', compact('payment', 'customer', 'location', 'category'));
     }
+   
+   
+    public function one_time()
+    {
+        $invoices = Payment::with('customer')->whereNotNull('description')->orderBy('created_at', 'desc')->get();
 
-    function months(){
-        return  $months = [
+        $totalBills = $invoices->count();
+        $totalRevenue = $invoices->sum('amount');
+        $totalRemaining = $invoices->sum('remaining');
+        $totalPaid = $invoices->sum('paid');
+        $totalPaidCount = $invoices->where('paid', '!=', 0)->count();
+        $totalunPaidCount = $invoices->where('paid', '==', 0)->count();
+
+
+        $months = $this->months();
+
+        $years = $this->years();
+        $totalInvoices = $invoices->count();
+	
+        return view('invoices.one_time', compact(
+            'invoices', 
+            'years', 
+            'months', 
+            'totalInvoices',
+            'totalRevenue', // added
+            'totalBills', //
+            'totalRemaining', // added
+            'totalPaid', // added
+            'totalPaidCount', //
+            'totalunPaidCount',
+        ));
+    }
+
+    private function months(){
+        $months = [
             'January', 'February', 'March', 'April', 'May', 'June',
             'July', 'August', 'September', 'October', 'November', 'December'
         ];
+
+        return $months;
+    }
+    private function years(){
+        $years = [2025,2024,2023, 2022,2021,2020];
+
+        return $years;
     }
 }

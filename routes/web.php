@@ -43,12 +43,14 @@ Route::middleware([
         Route::get('/reports/billing/create', [BillingReportController::class, 'create'])->name('reports.billing.create');
         Route::post('payments/store-one-time-invoice', [PaymentController::class, 'storeOneTimeInvoice'])->name('payments.store_one_time_invoice');
         Route::get('invoices/summary/{id}', [InvoicesController::class, 'summary'])->name('invoices.summary');
-        // Route::get('invoices/print_multiple_invoices', [InvoicesController::class, 'printMultiple'])->name('invoices.print_multiple_invoices');
+        Route::get('invoices/one_time', [InvoicesController::class, 'one_time'])->name('invoices.one_time');
         Route::get('invoices/print-one-time-invoice/{id}', [InvoicesController::class, 'oneTimeInvoice'])->name('invoices.oneTimeInvoice');
         Route::get('invoices/print/{id}', [InvoicesController::class, 'print'])->name('invoices.print');
         Route::post('invoices/filter', [InvoicesController::class, 'filter'])->name('invoices.filter');
         Route::post('invoices/multiple_invoices', [InvoicesController::class, 'multiple']);
+        Route::post('invoices/print_all_one_time_invoice', [InvoicesController::class, 'print_all_one_time_invoice']);
         Route::get('/invoices/specific_month', [InvoicesController::class, 'specific_month'])->name('invoices.specific_month');
+        Route::get('/readings/filter', [ReadingController::class, 'specific_month'])->name('readings.specific_month');
 
         Route::get('settings/deleteUser/{id}', [SettingsController::class, 'deleteUser'])->name('settings.deleteUser');
         Route::get('settings/deleteRole/{id}', [SettingsController::class, 'deleteRole'])->name('settings.deleteRole');
@@ -62,11 +64,11 @@ Route::middleware([
             'alerts' => AlertController::class,
             'categories' => CategoryController::class,
             'customers' => CustomerController::class,
+            'readings' => ReadingController::class,
             'invoices' => InvoicesController::class,
             'locations' => LocationController::class,
             'meters' => MeterController::class,
             'payments' => PaymentController::class,
-            'readings' => ReadingController::class,
             'roles' => RoleController::class,
             'tariffs' => TariffController::class,
             'types' => TypeController::class,

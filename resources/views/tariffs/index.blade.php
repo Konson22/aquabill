@@ -111,11 +111,11 @@
                           @endforeach
                       </ul>
                     </td>
-                    <td>
-                      {{-- @if (Auth::user()->role == 'Admin')
+                    {{-- <td>
+                      @if (Auth::user()->role == 'Admin')
                         <a href="#" title="Edit" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ $category->id }}"><i class="ri-hand-coin-line"></i></a>
-                      @endif  --}}
-                    </td>
+                      @endif 
+                    </td> --}}
                   </tr>
                 @endforeach
             </tbody>

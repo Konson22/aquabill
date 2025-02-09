@@ -113,6 +113,8 @@
 
 @section('content')
 
+@foreach($customers as $customer)
+<div class="">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4>Water Bill</h4>
         <button class="btn btn-primary" onclick="printDiv('printable-onetime-area')">Print Bill</button>
@@ -184,42 +186,15 @@
                 </div>
             </div>
         </div>
-        {{-- <div class="d-flex align-items-start justify-content-between">
-            <div class="flex-1">
-                <div class="item-wraper">
-                    CUS NAME
-                    <span class="flex-1">{{$customer->first_name}}</span>
-                </div>
-                <div class="item-wraper">
-                    CONTACT
-                    <span class="flex-1">{{$customer->phone}}</span>
-                </div>
-                <div class="item-wraper">
-                    CUS TYPE
-                    <span class="flex-1">{{$category->name}}</span>
-                </div>
-            </div>
-            <div class="flex-1 center-content">
-                <div class="item-wraper">
-                    AREA
-                    <span class="flex-1">{{$location->name}}</span>
-                </div>
-                <div class="item-wraper">
-                    HOUSE NO
-                    <span class="flex-1">{{$location->number}}</span>
-                </div>
-                <div class="item-wraper">
-                    Tariff
-                    <span class="flex-1">{{$payment->tariff}}</span>
-                </div>
-            </div>
-           
-        </div> --}}
         <ul>
             <li>Make the settlement of water bills monthly and take care of water tape in your primese.</li>
             <li>To report to Juba-Station management in case of damage or inquery Call:+211929928736/+211929928737</li>
         </ul>
     </div>
+</div>
+@endforeach
+
+
 @endsection
     <script>
         function printDiv(divId) {

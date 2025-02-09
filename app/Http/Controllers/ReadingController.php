@@ -15,17 +15,20 @@ class ReadingController extends Controller
      */
     public function index()
     {
-        $readings = Reading::all();
-        return view('readings.index', compact('readings'));
+        $readings = Payment::with(['customer', 'reading', 'meter'])->whereNull('description')->get();
+
+        $years = ['2021','2023','2024', '2025'];
+        $months = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+        return view('readings.index', compact(
+            'readings',
+            'years',
+            'months',
+        ));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -105,6 +108,47 @@ class ReadingController extends Controller
         return $amount;
     }
 
+    function specific_month(Request $request){
+        
+        // $monthName = Carbon::parse($request->input('month'));
+        $monthName = $request->input('month');
+        $year = $request->input('year');
+
+        $query = Payment::query();
+        
+        if ($monthName) {
+            $month = Carbon::parse($monthName)->month;
+            $query->whereMonth('date', $month);
+        }
+
+        if ($year) {
+            $query->whereYear('date', $year);
+        }
+
+        // Get the results
+        $readings = $query->with(['customer', 'reading', 'meter'])->whereNull('description')->get();
+        // dd($readings);
+        $totalReadings = $readings->count();
+        $totalConsumption = $readings->reduce(function ($carry, $log) {
+            return $carry + max(0, $log->reading->value - $log->reading->previous);
+        }, 0);
+
+        $years = ['2021','2023','2024', '2025'];
+        $months = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+        return view('readings.specific_month', compact(
+            'readings',
+            'years',
+            'monthName',
+            'months',
+            'year',
+            'totalReadings',
+            'totalConsumption',
+        ));
+    }
+
     public function show(string $id)
     {
         //
@@ -148,5 +192,13 @@ class ReadingController extends Controller
 
         return redirect()->route('readings.index')
             ->with('success', 'Reading deleted successfully.');
+    }
+
+    public function readings_api()
+    {
+        $readings = Reading::with(['customer', 'reading', 'meter'])->get();
+
+        return response()->json($readings);
+      
     }
 }

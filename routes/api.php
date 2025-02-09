@@ -106,10 +106,19 @@ Route::post('/readings', function (Request $request) {
     }
 });
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/login', function () {
-        return response()->json(['message' => 'Welcome to the API Dashboard']);
-    });
+Route::get('/readings_api', function(){
+    $readings = Reading::all();
+
+    return response()->json($readings);
 });
+
+
+// Route::middleware([ 
+//     'auth:sanctum',
+//     config('jetstream.auth_session'),
+//     'verified'
+// ])->group(function () {
+//     Route::get('/readings_api', [ReadingController::class, 'readings_api']);
+// });
 
 

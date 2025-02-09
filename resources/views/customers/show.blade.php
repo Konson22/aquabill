@@ -518,7 +518,7 @@
                               <i class="ri-file-pdf-2-line"></i>
                             </a> 
                             @endif 
-                            @if (Auth::user()->role == 'Admin')
+                            @if (Auth::user()->role == 'Admin' AND $payment->status != 'Paid')
                               |
                               <a href="#" title="Pay" data-bs-toggle="modal" data-bs-target="#editPaymentModal{{ $payment->id }}"><i class="ri-hand-coin-line"></i></a>
                             @endif 

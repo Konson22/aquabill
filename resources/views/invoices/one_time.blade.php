@@ -3,7 +3,7 @@
 @endphp
 @extends('layouts/layoutMaster')
 
-@section('title', 'Invoices')
+@section('title', 'One Time Invoices')
 
 <!-- Vendor Styles -->
 @section('vendor-style')
@@ -60,8 +60,7 @@
 
 @if(Auth::user()->role == 'Admin' OR Auth::user()->department == 'Meters')
   @foreach($invoices as $paid)
-    @include('modals.edit-payment-modal', ['payment' => $paid])
-    @include('modals.view-payment-modal', ['payment' => $paid])
+    @include('modals.view_one_time_invoice', ['payment' => $paid])
   @endforeach
 
   <div class="row mb-5">
@@ -145,18 +144,9 @@
       <div class="d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center justify-content-between mb-4">
           <div class="d-flex align-items-center">
-            <label for="scheckAll" class="btn btn-secondary d-flex align-items-center">
-              <input type="checkbox" id="scheckAll" class="mr-2" />
-              Select All
-            </label>
-            <button class="btn btn-primary text-white mx-4" id="sendSelected" 
-              @if (Auth::user()->role == 'Admin' OR Auth::user()->role == 'invoices') @else disabled @endif
+            <a class="btn btn-primary text-white" href="/invoices"
             >
-              print Selected
-            </button>
-            <a class="btn btn-primary text-white" href="invoices/one_time"
-            >
-              One time invoices
+              Water invoices
             </a>
           </div>
         </div>
@@ -182,12 +172,10 @@
           <tr>
             <th class="font">Receipt No</th>
             <th class="font">Cus Name</th>
-            <th class="font">Outstanding</th>
-            <th class="font">Amount</th>
             <th class="font">Total Bill</th>
             <th class="font">Paid</th>
-            <th class="font">C/Balance</th>
-            <th class="font">Collect Date</th>
+            <th class="font">Issue Date</th>
+            <th class="font">Status</th>
             <th class="font no-export">Actions</th>
           </tr>
         </thead>
@@ -195,23 +183,20 @@
           @foreach($invoices as $payment)
             <tr data-id="{{$payment->id}}">
               <td>
-                <input type="checkbox" class="row-checkbox" />
                 {{ date("dm", strtotime($payment->date)) }}{{ $payment->id }}
               </td>
               <td>
                 {{ $payment->customer->first_name }}
               </td>
-              <td>{{ $payment->previous_balance }}</td>
               <td>{{ $payment->amount }} SSP</td>
-              <td>{{ $payment->amount + $payment->previous_balance }} SSP</td>
               <td>{{ $payment->paid }} SSP</td>
-              <td>{{ $payment->remaining }} SSP</td>
               <td>{{ date("d/m/Y", strtotime($payment->updated_at)) ?? '-----' }}</td>
+              <td>{{ $payment->status }}</td>
               <td class="no-export">
                 <a class="no-export" href="{{ route('payments.show', $payment->id) }}" title="View" data-bs-toggle="modal" data-bs-target="#viewPaymentModal{{ $payment->id }}">
                   <i class="ri-fullscreen-line"></i>
                 </a> 
-                <a class="no-export" href="/invoices/print/{{$payment->id }}" title="Print" target="_blank">
+                <a class="no-export" href="/invoices/print-one-time-invoice/{{$payment->id }}" title="Print" target="_blank">
                   <i class="ri-file-pdf-2-line"></i>
                 </a> 
                 @if (Auth::user()->role == 'Admin' AND $payment->status != 'Paid')
@@ -223,18 +208,17 @@
               @endif
               </td>
             </tr>
-          @endforeach
+            @endforeach
+            <tr>
+              <td>Total</td>
+              <td>---</td>
+              <td>{{ $totalRevenue }}</td>
+              <td>{{ $totalPaid }}</td>
+              <td>---</td>
+              <td>---</td>
+              <td>---</td>
+            </tr>
         </tbody>
-        <tfoot>
-          <td>Total</td>
-          <td>---</td>
-          <td>---</td>
-          <td>{{ $totalRevenue }}</td>
-          <td>{{ $totalPaid }}</td>
-          <td>{{ $totalRemaining }}</td>
-          <td>---</td>
-          <td>---</td>
-        </tfoot>
       </table>
     </div>
   </div>

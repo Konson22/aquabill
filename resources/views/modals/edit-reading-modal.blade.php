@@ -21,7 +21,7 @@
           </div>
           <div class="mb-2">
             <label for="date" class="form-label">Date</label>
-            <input type="date" class="input form-control" id="date" name="date" value="{{ $reading->date }}" required>
+            <input type="date" class="input form-control" id="date" name="date" value="{{ date(strtotime($reading->date)) }}">
           </div>
           <div class="modal-footer mt-4">
             <button type="button" class="btn-secondary btn" data-bs-dismiss="modal" aria-label="Close">

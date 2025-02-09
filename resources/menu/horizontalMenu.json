@@ -19,6 +19,12 @@
       "slug": "invoices.index"
     },
     {
+      "url": "/readings",
+      "icon": "menu-icon tf-icons ri-user-search-line",
+      "name": "Readings",
+      "slug": "readings.index"
+    },
+    {
       "url": "/tariffs",
       "icon": "menu-icon tf-icons ri-price-tag-3-line",
       "name": "Tariffs",

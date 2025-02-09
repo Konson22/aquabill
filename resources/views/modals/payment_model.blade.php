@@ -11,8 +11,6 @@
           <form action="{{ route('readings.update', $reading->id) }}" method="POST">
             @csrf
             @method('PUT')
-           
-           
             <button type="submit" class="btn btn-primary">Save changes</button>
           </form>
         </div>

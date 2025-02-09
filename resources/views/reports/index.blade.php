@@ -25,6 +25,7 @@
       'resources/assets/vendor/libs/@form-validation/auto-focus.js',
       'resources/assets/vendor/libs/cleavejs/cleave.js',
       'resources/assets/vendor/libs/cleavejs/cleave-phone.js',
+      'resources/assets/js/charts-apex.js',
       'resources/assets/vendor/libs/sweetalert2/sweetalert2.js'
       ])
       @endsection
@@ -109,6 +110,7 @@
 
   </div>
   <hr class="my-6">
+  
 <div class="row">
     <div class="col-lg-6">
       <div class="card">
@@ -304,3 +306,4 @@
 </div>
 
 @endsection
+

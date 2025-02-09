@@ -1,8 +1,9 @@
 <div class="modal fade" id="editCategoryModal{{ $category->id }}" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        <form action="{{ route('tariffs.update', $category->id) }}" method="PUT">
+        <form action="{{ route('categories.update', $category->id) }}" method="POST">
           @csrf
+          @method('PUT')
           <div class="modal-header">
             <h5 class="modal-title" id="editCategoryModalLabel">Edit Category</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

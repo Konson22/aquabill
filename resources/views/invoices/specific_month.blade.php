@@ -64,41 +64,104 @@
     @include('modals.view-payment-modal', ['payment' => $paid])
   @endforeach
 
-  <div class="d-flex align-items-center justify-content-between mb-4">
-    <span class="h3">Water Bill ({{ $totalInvoices }})</span>
-    <div class="d-flex align-items-center">
-      <label for="scheckAll" class="btn btn-secondary mx-4 d-flex align-items-center">
-        <input type="checkbox" id="scheckAll" class="mr-2" />
-        Select All
-      </label>
-      <button class="btn btn-primary text-white" id="sendSelected" 
-        @if (Auth::user()->role == 'Admin' OR Auth::user()->role == 'invoices') @else disabled @endif
-      >
-        print Selected
-      </button>
+<div class="row mb-5">
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header">
+        <div class="d-flex justify-content-between">
+          <h5 class="mb-1">Billing Overview</h5>
+        </div>
+      </div>
+      <div class="card-body d-flex justify-content-between flex-wra gap-4">
+        <div class="d-flex align-items-center gap-3">
+          <div class="card-info">
+            <h5 class="mb-0">{{ $totalPaidCount }}</h5>
+            <p class="mb-0">Total Bills</p>
+          </div>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+          <div class="card-info">
+            <h5 class="mb-0">{{ $totalBills }}</h5>
+            <p class="mb-0">Paid Bills</p>
+          </div>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+          <div class="card-info">
+            <h5 class="mb-0">{{ $totalunPaidCount }}</h5>
+            <p class="mb-0">Unpaid Bills</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
-<div class="d-flex justify-content-between">
-  <div class=""></div>
-  <form id="departmentForm" class="d-flex" action="{{ route('invoices.specific_month') }}" method="GET">
-    <select id="department" name="month" class="form-select form-select-sm bg-white" aria-label="Choose User Department">
-      <option selected value="">Choose Month</option>
-      @foreach($months as $month)
-        <option value="{{ $month }}">{{ $month }}</option>
-      @endforeach
-    </select>
-    <select id="year" name="year" class="form-select form-select-sm  bg-white" aria-label="Choose Year">
-      <option selected value="">Choose Year</option>
-      @foreach($years as $year)
-        <option value="{{ $year }}">{{ $year }}</option>
-      @endforeach
-    </select>
-    <button class="btn btn-primary" type="submit">Find</button>
-  </form></div>  
-
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-header">
+        <div class="d-flex justify-content-between">
+          <h5 class="mb-1">Financial Overview</h5>
+        </div>
+      </div>
+      <div class="card-body d-flex justify-content-between flex-wrap gap-4">
+        <div class="d-flex align-items-center gap-3">
+          <div class="avatar">
+            <div class="avatar-initial bg-label-primary rounded">
+              <i class="ri-file-paper-2-line ri-24px"></i>
+            </div>
+          </div>
+          <div class="card-info">
+            <h5 class="mb-0">{{ $totalRevenue }} SSP</h5>
+            <p class="mb-0">Total Income</p>
+          </div>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+          <div class="avatar">
+            <div class="avatar-initial bg-label-primary rounded">
+              <i class="ri-file-paper-2-line ri-24px"></i>
+            </div>
+          </div>
+          <div class="card-info">
+            <h5 class="mb-0">{{ $totalPaid }} SSP</h5>
+            <p class="mb-0">Total Amount Paid</p>
+          </div>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+          <div class="avatar">
+            <div class="avatar-initial bg-label-info rounded">
+              <i class="ri-hourglass-2-line ri-24px"></i>
+            </div>
+          </div>
+          <div class="card-info">
+            <h5 class="mb-0">{{ $totalRemaining }} SSP</h5>
+            <p class="mb-0">Unpaid Bills</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  
   <div class="card">
     <div class="card-body customers-card">
+      <div class="d-flex align-items-center justify-content-between mb-4">
+        <span class="h3">
+          Bill for {{ $monthTitle }}
+          @if ($year)
+            - {{$year}}
+          @endif
+        </span>
+        <div class="d-flex align-items-center">
+          <label for="scheckAll" class="btn btn-secondary mx-4 d-flex align-items-center">
+            <input type="checkbox" id="scheckAll" class="mr-2" />
+            Select All
+          </label>
+          <button class="btn btn-primary text-white" id="sendSelected" 
+            @if (Auth::user()->role == 'Admin' OR Auth::user()->role == 'invoices') @else disabled @endif
+          >
+            print Selected
+          </button>
+        </div>
+      </div>
       <table class="table invoice-table font" id='example'>
         <thead>
           <tr>
@@ -145,6 +208,16 @@
             </tr>
           @endforeach
         </tbody>
+        <tfoot>
+            <td>Total</td>
+            <td>---</td>
+            <td>---</td>
+            <td>{{ $totalRevenue }}</td>
+            <td>{{ $totalPaid }}</td>
+            <td>{{ $totalRemaining }}</td>
+            <td>---</td>
+            <td>---</td>
+          </tfoot>
       </table>
     </div>
   </div>

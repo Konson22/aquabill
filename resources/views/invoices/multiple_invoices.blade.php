@@ -112,7 +112,7 @@
                     <div class="flex-1 text-center">
                         <p class="title-text">
                             SOUTH SUDAN URBAN WATER CORPERATION 
-                            <br /> WATER BILL <br/> Serial No: <span class="text-danger title-text">
+                            <br /> WATER BILL <br/> Receipt No: <span class="text-danger title-text">
                                 #{{ date("dm", strtotime($payment->date)) }}{{ $payment->id }}</span>
                         </p>
                     </div>
@@ -136,7 +136,7 @@
                                 @else
                                     ---
                                 @endif
-                           </span>
+                        </span>
                         </div>
                         <div class="item-wraper">
                             HOUSE NO:
@@ -164,15 +164,15 @@
                         </div>
                         <div class="item-wraper">
                             CONSUMPTION
-                            <span class="flex-1 d-flex justify-content-end">{{$payment->reading->value ?? 0 - $payment->reading->previous ?? 0}} M³</span>
+                            <span class="flex-1 d-flex justify-content-end">{{$payment->reading->value - $payment->reading->previous}} M³</span>
                         </div>
                     </div>
                     <div class="flex-1">
                         <div class="item-wraper">
                             OUTSTANDING
-                            <span class="flex-1 d-flex justify-content-end">{{$payment->remaining}}</span>
+                            <span class="flex-1 d-flex justify-content-end">{{$payment->previous_balance}}</span>
                         </div>
-                         <div class="item-wraper">
+                        <div class="item-wraper">
                             FIXED CHARGES:
                             <span class="flex-1 d-flex justify-content-end">{{ $payment->charges}}</span>
                         </div>
@@ -180,14 +180,12 @@
                             TARIFF
                             <span class="flex-1 d-flex justify-content-end">{{$payment->customer->category->tariff ?? null}}</span>
                         </div>
-                       
+                    
                         <div class="item-wraper">
                             VOLUMETRIC CHARGES
-                            <span class="flex-1 d-flex justify-content-end">{{$payment->amount}}</span>
-                        </div>
-                        <div class="item-wraper">
-                            AMOUNT PAID
-                            <span class="flex-1 d-flex justify-content-end">{{$payment->paid}}</span>
+                            <span class="flex-1 d-flex justify-content-end">
+                                {{ ($payment->reading->value - $payment->reading->previous) * $payment->customer->category->tariff }}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -200,7 +198,9 @@
                     <div class="flex-1">
                         <div class="item-wraper">
                             TOTAL BILL
-                            <span class="flex-1 d-flex justify-content-end">{{ $payment->charges + $payment->amount}}</span>
+                            <span class="flex-1 d-flex justify-content-end">
+                                {{ $payment->amount + $payment->previous_balance}}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -209,10 +209,10 @@
                     <li>To report to Juba-Station management in case of damage or inquery Call:+211929928736/+211929928737</li>
                 </ul>
             </div>
-                @if($loop->iteration % 3 === 0 && !$loop->last)
-                <div class="page_break"></div>
-                @endif
-            @endforeach
+            @if($loop->iteration % 3 === 0 && !$loop->last)
+            <div class="page_break"></div>
+            @endif
+        @endforeach
         </div>
     </div>
 @endsection
