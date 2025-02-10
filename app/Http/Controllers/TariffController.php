@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Tariff;
 use App\Models\Category;
@@ -36,14 +37,14 @@ class TariffController extends Controller
          $request->validate([
             'name' => 'required|string|max:255',
             'amount' => 'required|numeric',
-            'date' => 'required|date',
+            'date' => 'nullable|date',
             'category_id' => 'required|exists:categories,id',
         ]);
 
         $tariff = new Tariff();
         $tariff->name = $request->name;
         $tariff->amount = $request->amount;
-        $tariff->date = $request->date;
+        $tariff->date = $request->date ?? Carbon::now();
         $tariff->category_id = $request->category_id;
         $tariff->save();
 

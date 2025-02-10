@@ -185,39 +185,20 @@ class InvoicesController extends Controller
    
    
     function print_all_one_time_invoice(Request $request){
+
         $selectedIds = $request->input('selected_ids');
         $ids = json_decode($selectedIds, true);
-        $customers = Payment::whereIn('id', $ids)
-        ->with(['customer.location', 'customer.category', 'customer.meters', 'reading', 'tariff'])
-        ->get();
+        
+        $payments = Payment::with(['customer.location', 'customer.category', 'tariff'])->whereIn('id', $ids)->whereNotNull('description')->get();
 
-        $totalInvoices = Payment::count();
-
-        return view('invoices.print_all_one_time_invoice', compact(
-            'customers', 
-            'totalInvoices', 
-        ));
+        return view('invoices.print_all_one_time_invoice', compact('payments'));
     }
 
     
     public function oneTimeInvoice($id)
     {
-        $payment = Payment::with(['customer.location', 'reading'])->find($id);
-
-        if (!$payment) {
-            return redirect()->back()->with('error', 'Payment not found.');
-        }
-
-        $consumption = 0;
-        $category = Category::find($payment->customer->category_id);
-
-        $customer = $payment->customer;
-        $location = $payment->customer->location;
-        $paymentDate = Carbon::parse($payment->date)->format('Y-m-d');
-
-        // dd($payment);
-
-        return view('invoices.one-time-invoice', compact('payment', 'customer', 'location', 'category'));
+        $payments = Payment::with(['customer.location', 'customer.category', 'tariff'])->where('id', $id)->whereNotNull('description')->get();
+        return view('invoices.one-time-invoice', compact('payments'));
     }
    
    

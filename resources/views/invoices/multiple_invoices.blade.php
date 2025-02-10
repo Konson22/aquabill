@@ -83,7 +83,6 @@
         .my-container{
             font-size: 10px;
             padding: 6px;
-            background-color: #e22121;
         }
         .item-wraper span{
             margin-left: 7px;
@@ -184,13 +183,13 @@
                         <div class="item-wraper">
                             VOLUMETRIC CHARGES
                             <span class="flex-1 d-flex justify-content-end">
-                                {{ ($payment->reading->value - $payment->reading->previous) * $payment->customer->category->tariff }}
+                                {{ ($payment->reading->value - $payment->reading->previous) * $payment->customer->category->tariff ?? 0 }}
                             </span>
                         </div>
                     </div>
                 </div>
                 <div class="d-flex align-items-en justify-content-between">
-                    <div class="flex-1">
+                    <div class="flex-1 my-4">
                         {{ $payment->reading->billing_officer ?? ''}}
                         <p class="sign">Sign:Billing Officer</p>
                     </div>

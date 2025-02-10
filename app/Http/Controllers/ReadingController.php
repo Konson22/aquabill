@@ -15,17 +15,23 @@ class ReadingController extends Controller
      */
     public function index()
     {
-        $readings = Payment::with(['customer', 'reading', 'meter'])->whereNull('description')->get();
+        $readings = Payment::with(['customer', 'reading', 'meter'])->whereNull('description')->orderBy('date', 'desc')->get();
 
-        $years = ['2021','2023','2024', '2025'];
-        $months = [
-            'January', 'February', 'March', 'April', 'May', 'June',
-            'July', 'August', 'September', 'October', 'November', 'December'
-        ];
+        $totalReadings = $readings->count();
+        $totalConsumption = $readings->reduce(function ($carry, $log) {
+            return $carry + max(0, $log->reading->value - $log->reading->previous);
+        }, 0);
+
+        $months = $this->months();
+
+        $years = $this->years();
+        
         return view('readings.index', compact(
             'readings',
             'years',
             'months',
+            'totalReadings',
+            'totalConsumption'
         ));
     }
 
@@ -63,7 +69,7 @@ class ReadingController extends Controller
         $reading->meter_id = $request->input('meter_id');
         $reading->value = $request->input('value');
         $reading->previous = $request->input('previous');
-        $reading->date = $request->input('date');
+        $reading->date = $request->input('date') ?? Carbon::now();
         $reading->source = $request->input('source');
         $reading->billing_officer = $request->input('billing_officer');
         $reading->save();
@@ -110,7 +116,6 @@ class ReadingController extends Controller
 
     function specific_month(Request $request){
         
-        // $monthName = Carbon::parse($request->input('month'));
         $monthName = $request->input('month');
         $year = $request->input('year');
 
@@ -126,18 +131,17 @@ class ReadingController extends Controller
         }
 
         // Get the results
-        $readings = $query->with(['customer', 'reading', 'meter'])->whereNull('description')->get();
-        // dd($readings);
+        $readings = $query->with(['customer', 'reading', 'meter'])->whereNull('description')->orderBy('date', 'desc')->get();
+
         $totalReadings = $readings->count();
         $totalConsumption = $readings->reduce(function ($carry, $log) {
             return $carry + max(0, $log->reading->value - $log->reading->previous);
         }, 0);
 
-        $years = ['2021','2023','2024', '2025'];
-        $months = [
-            'January', 'February', 'March', 'April', 'May', 'June',
-            'July', 'August', 'September', 'October', 'November', 'December'
-        ];
+        $months = $this->months();
+
+        $years = $this->years();
+
         return view('readings.specific_month', compact(
             'readings',
             'years',
@@ -170,12 +174,14 @@ class ReadingController extends Controller
         $request->validate([
             'value' => 'required|numeric',
             'previous' => 'required|numeric',
+            'date' => 'nullable|date',
         ]);
     
         $reading = Reading::findOrFail($id);
         $reading->update([
             'value' => $request->input('value'),
             'previous' => $request->input('previous'),
+            'date' => $request->input('date'),
         ]);
 
 
@@ -200,5 +206,19 @@ class ReadingController extends Controller
 
         return response()->json($readings);
       
+    }
+
+    private function months(){
+        $months = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        return $months;
+    }
+    private function years(){
+        $years = [2025,2024,2023, 2022,2021,2020];
+
+        return $years;
     }
 }

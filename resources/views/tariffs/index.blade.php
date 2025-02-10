@@ -80,7 +80,7 @@
 <hr class="my-6">
 <div class="col-12">
     <div class="row">
-        <div class="col-6">
+        <div class="col-7">
           @if (Auth::user()->role == 'Admin' OR Auth::user()->department == 'tatiff')
             <div class="modal-footer mb-2">
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCategory">
@@ -97,6 +97,7 @@
                       <th>Name</th>
                       <th>Tariff</th>
                       <th>Charges</th>
+                      <th>Actions</th>
                   </tr>
               </thead>
               <tbody class="table-border-bottom-0">
@@ -111,11 +112,11 @@
                           @endforeach
                       </ul>
                     </td>
-                    {{-- <td>
+                    <td>
                       @if (Auth::user()->role == 'Admin')
                         <a href="#" title="Edit" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ $category->id }}"><i class="ri-hand-coin-line"></i></a>
                       @endif 
-                    </td> --}}
+                    </td>
                   </tr>
                 @endforeach
             </tbody>
@@ -125,7 +126,7 @@
 
 
 </div>
-<div class="col-6">
+<div class="col-5">
         @if (Auth::user()->role == 'Admin' OR Auth::user()->department == 'tatiff')
           <div class="modal-footer mb-2">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modaltariff">
@@ -141,7 +142,6 @@
                     <tr>
                       <th>Name</th>
                       <th>Amount</th>
-                      {{-- <th>Date</th> --}}
                       <th>Category</th>
                       <th></th>
                   </tr>
@@ -151,7 +151,6 @@
                 <tr>
                   <td>{{ $tariff->name }}</td>
                   <td>{{ $tariff->amount }}</td>
-                  {{-- <td>{{ $tariff->date }}</td> --}}
                   <td>{{ $tariff->category->name }}</td>
                   @if (Auth::user()->role == 'Admin')
                     <td>

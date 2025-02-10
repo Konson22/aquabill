@@ -64,12 +64,17 @@
     @include('modals.view-payment-modal', ['payment' => $paid])
   @endforeach
 
+
 <div class="row mb-5">
   <div class="col-lg-4">
     <div class="card">
       <div class="card-header">
         <div class="d-flex justify-content-between">
-          <h5 class="mb-1">Billing Overview</h5>
+          <h5 class="mb-1"> {{ $monthTitle }}
+            @if ($year)
+              - {{$year}}
+            @endif Invoices
+          </h5>
         </div>
       </div>
       <div class="card-body d-flex justify-content-between flex-wra gap-4">
@@ -98,7 +103,10 @@
     <div class="card">
       <div class="card-header">
         <div class="d-flex justify-content-between">
-          <h5 class="mb-1">Financial Overview</h5>
+          <h5 class="mb-1">{{ $monthTitle }}
+            @if ($year)
+              {{$year}}
+            @endif Financial Overview</h5>
         </div>
       </div>
       <div class="card-body d-flex justify-content-between flex-wrap gap-4">
@@ -144,12 +152,6 @@
   <div class="card">
     <div class="card-body customers-card">
       <div class="d-flex align-items-center justify-content-between mb-4">
-        <span class="h3">
-          Bill for {{ $monthTitle }}
-          @if ($year)
-            - {{$year}}
-          @endif
-        </span>
         <div class="d-flex align-items-center">
           <label for="scheckAll" class="btn btn-secondary mx-4 d-flex align-items-center">
             <input type="checkbox" id="scheckAll" class="mr-2" />
@@ -161,6 +163,21 @@
             print Selected
           </button>
         </div>
+        <form id="departmentForm" class="d-flex" action="{{ route('invoices.specific_month') }}" method="GET">
+          <select id="department" name="month" class="form-select form-select-sm bg-white" aria-label="Choose User Department">
+            <option selected value="">Choose Month</option>
+            @foreach($months as $month)
+              <option value="{{ $month }}">{{ $month }}</option>
+            @endforeach
+          </select>
+          <select id="year" name="year" class="form-select form-select-sm  bg-white" aria-label="Choose Year">
+            <option selected value="">Choose Year</option>
+            @foreach($years as $year)
+              <option value="{{ $year }}">{{ $year }}</option>
+            @endforeach
+          </select>
+          <button class="btn btn-primary" type="submit">Find</button>
+        </form>
       </div>
       <table class="table invoice-table font" id='example'>
         <thead>
@@ -191,19 +208,18 @@
               <td>{{ $payment->remaining }} SSP</td>
               <td>{{ date("d/m/Y", strtotime($payment->date)) ?? '-----' }}</td>
               <td class="no-export">
+                @if (Auth::user()->role == 'Admin' AND $payment->status != 'Paid')
+                  <a class="no-export" href="#" title="Pay" data-bs-toggle="modal" 
+                    data-bs-target="#editPaymentModal{{ $payment->id }}">
+                    <i class="ri-hand-coin-line"></i>
+                  </a>  |
+                @endif
                 <a class="no-export" href="{{ route('payments.show', $payment->id) }}" title="View" data-bs-toggle="modal" data-bs-target="#viewPaymentModal{{ $payment->id }}">
                   <i class="ri-fullscreen-line"></i>
-                </a> 
+                </a> |
                 <a class="no-export" href="/invoices/print/{{$payment->id }}" title="Print" target="_blank">
                   <i class="ri-file-pdf-2-line"></i>
                 </a> 
-                @if (Auth::user()->role == 'Admin' AND $payment->status != 'Paid')
-                |
-                <a class="no-export" href="#" title="Pay" data-bs-toggle="modal" 
-                  data-bs-target="#editPaymentModal{{ $payment->id }}">
-                  <i class="ri-hand-coin-line"></i>
-                </a>  |
-              @endif
               </td>
             </tr>
           @endforeach

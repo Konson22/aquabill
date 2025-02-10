@@ -87,6 +87,9 @@
     .sign{
         border-top: 1px dotted black;
     }
+    .billing-card{
+        margin-bottom: 20px;
+    }
     @media print{
         .main-wraper{
             margin-top: 0;
@@ -94,8 +97,8 @@
         }
         .my-container{
             font-size: 10px;
-            padding: 6px;
-            background-color: #e22121;
+            padding: 0px;
+            background-color: #f5f5f5;
         }
         .item-wraper span{
             margin-left: 7px;
@@ -113,86 +116,76 @@
 
 @section('content')
 
-@foreach($customers as $customer)
-<div class="">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4>Water Bill</h4>
-        <button class="btn btn-primary" onclick="printDiv('printable-onetime-area')">Print Bill</button>
-    </div>
-    <div class="my-container" id="printable-onetime-area">
-        <header class="d-flex">
-            <img class="logo" src="{{ asset('logo.jpg') }}" alt="Logo">
-            <div class="flex-1 text-center">
-                <p class="title-text">SOUTH SUDAN URBAN WATER CORPERATION <br /> ONE TIME INVOICE</p>
-            </div>
-            <img class="logo" src="{{ asset('logo.jpg') }}" alt="Logo2">
-        </header>
-        <div class="d-flex align-items-start justify-content-between">
-            <div class="flex-1">
-                <div class="item-wraper">
-                    CUS NAME
-                    <span class="flex-1 d-flex justify-content-end">{{$customer->first_name}}</span>
-                </div>
-                <div class="item-wraper">
-                    CONTACT
-                    <span class="flex-1 d-flex justify-content-end">{{$customer->phone}}</span>
-                </div>
-                <div class="item-wraper">
-                    CUS TYPE
-                    <span class="flex-1 d-flex justify-content-end">{{$category->name ?? 'N/A'}}</span>
-                </div>
-            </div>
-            <div class="flex-1 center-content">
-                <div class="item-wraper">
-                    AREA
-                    <span class="flex-1 d-flex justify-content-end">{{$location->name}}</span>
-                </div>
-                <div class="item-wraper">
-                    HOUSE NO
-                    <span class="flex-1 d-flex justify-content-end">{{$location->number}}</span>
-                </div>
-                <div class="item-wraper">
-                    Tariff
-                    <span class="flex-1 d-flex justify-content-end">{{$payment->tariff}}</span>
-                </div>
-            </div>
-            <div class="flex-1">
-              <div class="item-wraper">
-                    BILLING DATE
-                    <span class="flex-1 d-flex justify-content-end">{{$payment->date}}</span>
-                </div>
-               <div class="item-wraper">
-                    OTHER CHARGES
-                    <span class="flex-1 d-flex justify-content-end">{{$payment->charges + $payment->amount}}</span>
-                </div>
-                 <div class="item-wraper">
-                    DESCRIPTION
-                    <span class="flex-1 d-flex justify-content-end">{{$payment->description}}</span>
-                </div>
-            </div>
-        </div>
-        <div class="d-flex align-items-center justify-content-between">
-            <div class="flex-1 signiture">
-                {{ Auth::user()->name }}
-                <p class="sign">Sign:Billing Officer</p>
-            </div>
-            <div class="flex-1 center-content"></div>
-            <div class="flex-1">
-               
-              
-                 <div class="item-wraper">
-                    TOTAL AMOUNT:
-                    <span class="flex-1 d-flex justify-content-end">{{$payment->amount}}</span>
-                </div>
-            </div>
-        </div>
-        <ul>
-            <li>Make the settlement of water bills monthly and take care of water tape in your primese.</li>
-            <li>To report to Juba-Station management in case of damage or inquery Call:+211929928736/+211929928737</li>
-        </ul>
-    </div>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4>One Time Invoice</h4>
+    <button class="btn btn-primary" onclick="printDiv('print_one_time_all')">Print Bill</button>
 </div>
-@endforeach
+
+<div class="" id="print_one_time_all">
+    @foreach($payments as $payment)
+        <div class="my-container billing-card">
+            <header class="d-flex">
+                <img class="logo" src="{{ asset('logo.jpg') }}" alt="Logo">
+                <div class="flex-1 text-center">
+                    <p class="title-text">SOUTH SUDAN URBAN WATER CORPERATION <br /> ONE TIME INVOICE</p>
+                </div>
+                <img class="logo" src="{{ asset('logo.jpg') }}" alt="Logo2">
+            </header>
+            <div class="d-flex align-items-start justify-content-between">
+                <div class="flex-1">
+                    <div class="item-wraper">
+                        CUSTOMER NAME
+                        <span class="flex-1 d-flex justify-content-end">{{$payment->customer->first_name}}</span>
+                    </div>
+                    <div class="item-wraper">
+                        CONTACT
+                        <span class="flex-1 d-flex justify-content-end">{{$payment->customer->phone}}</span>
+                    </div>
+                    <div class="item-wraper">
+                        CUSTOMER TYPE
+                        <span class="flex-1 d-flex justify-content-end">{{$payment->customer->category->name ?? 'N/A'}}</span>
+                    </div>
+                </div>
+                <div class="flex-1 center-content">
+                    <div class="item-wraper">
+                        AREA/ADDRESS
+                        <span class="flex-1 d-flex justify-content-end">{{$payment->customer->location->name ?? 'N/A' }}</span>
+                    </div>
+                    <div class="item-wraper">
+                        PLOT NUMBER
+                        <span class="flex-1 d-flex justify-content-end">{{$payment->customer->location->number ?? 'N/A' }}</span>
+                    </div>
+                    <div class="item-wraper">
+                        BILLING DATE
+                        <span class="flex-1 d-flex justify-content-end">{{$payment->date}}</span>
+                    </div>
+                </div>
+                <div class="flex-1">
+                    <div class="item-wraper">
+                        DESCRIPTION
+                        <span class="flex-1 d-flex justify-content-end">{{$payment->description}}</span>
+                    </div>
+                    <div class="item-wraper">
+                        TOTAL AMOUNT:
+                        <span class="flex-1 d-flex justify-content-end">{{$payment->amount}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-between mt-3">
+                <div class="signiture">
+                    {{ Auth::user()->name }}
+                    <p class="sign">Sign:Billing Officer</p>
+                </div>
+                <div class="flex-1">
+                    <ul>
+                        <li>Make the settlement of water bills monthly and take care of water tape in your primese.</li>
+                        <li>To report to Juba-Station management in case of damage or inquery Call:+211929928736/+211929928737</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    @endforeach
+</div>
 
 
 @endsection

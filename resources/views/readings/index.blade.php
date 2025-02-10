@@ -61,6 +61,62 @@
 
 @if(Auth::user()->role == 'Admin' OR Auth::user()->department == 'Meters')
   
+  <div class="row mb-8">
+    <div class="col-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-center gap-3">
+            <div class="avatar">
+              <div class="avatar-initial bg-label-primary rounded">
+                <i class="ri-file-paper-2-line ri-24px"></i>
+              </div>
+            </div>
+            <div class="card-info">
+              <h4 class="mb-0">{{ $totalReadings }}</h4>
+              <p class="mb-0">Total Readings</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-center gap-3">
+            <div class="avatar">
+              <div class="avatar-initial bg-label-primary rounded">
+                <span class="avatar-initial rounded-3 bg-label-primary">
+                  <i class="ri-drop-line ri-24px"></i>
+                </span>
+              </div>
+            </div>
+            <div class="card-info">
+              <h4 class="mb-0">{{ $totalConsumption }} M³</h4>
+              <p class="mb-0">Consumption</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-center gap-3">
+            <div class="avatar">
+              <div class="avatar-initial bg-label-info rounded">
+                <i class="ri-hourglass-2-line ri-24px"></i>
+              </div>
+            </div>
+            <div class="card-info">
+              <h4 class="mb-0">0</h4>
+              <p class="mb-0">Unaccounted</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="card">
     <div class="card-body customers-card">
         <div class="d-flex justify-content-between">
@@ -96,18 +152,18 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($readings as $reading)
+              @foreach($readings as $reading)
                 <tr data-id="{{$reading->id}}">
-                    <td>{{ $reading->customer->first_name }}</td>
-                    <td>{{ $reading->meter->serial ?? 'N/A' }}</td>
-                    <td>{{ $reading->meter->status ?? 'N/A' }}</td>
-                    <td>{{ $reading->reading->previous ?? 'N/A' }}</td>
-                    <td>{{ $reading->reading->value ?? 'N/A' }}</td>
-                    <td>{{( $reading->reading->value ?? 0) - ($reading->reading->previous ?? 0) }}</td>
-                    <td>{{ $reading->reading->billing_officer ?? 'N/A' }}</td>
-                    <td>{{ date("d-m-Y", strtotime($reading->reading->date ?? '')) }}</td>
+                  <td>{{ $reading->customer->first_name }}</td>
+                  <td>{{ $reading->meter->serial ?? 'N/A' }}</td>
+                  <td>{{ $reading->meter->status ?? 'N/A' }}</td>
+                  <td>{{ $reading->reading->previous ?? 'N/A' }}</td>
+                  <td>{{ $reading->reading->value ?? 'N/A' }}</td>
+                  <td>{{( $reading->reading->value ?? 0) - ($reading->reading->previous ?? 0) }}</td>
+                  <td>{{ $reading->reading->billing_officer ?? 'N/A' }}</td>
+                  <td>{{ date("d-m-Y", strtotime($reading->reading->date ?? '')) }}</td>
                 </tr>
-            @endforeach
+              @endforeach
             </tbody>
         </table>
     </div>

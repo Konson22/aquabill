@@ -108,7 +108,7 @@
               </div>
             </div>
             <div class="card-info">
-              <h4 class="mb-0">55 </h4>
+              <h4 class="mb-0">0</h4>
               <p class="mb-0">Unaccounted</p>
             </div>
           </div>
@@ -122,7 +122,7 @@
       <div class="d-flex justify-content-between mt-2">
           <div class="">
             <span class="h4">
-              List of Readings for {{ $monthName }}
+              Readings of {{ $monthName }}
               @if ($year)
                 - {{$year}}
               @endif
@@ -159,18 +159,18 @@
           </tr>
           </thead>
           <tbody>
-          @foreach($readings as $reading)
+            @foreach($readings as $reading)
               <tr data-id="{{$reading->id}}">
-                  <td>{{ $reading->customer->first_name }}</td>
-                  <td>{{ $reading->meter->serial }}</td>
-                  <td>{{ $reading->meter->status }}</td>
-                  <td>{{ $reading->reading->previous }}</td>
-                  <td>{{ $reading->reading->value }}</td>
-                  <td>{{ $reading->reading->value - $reading->reading->previous }}</td>
-                  <td>{{ $reading->reading->billing_officer }}</td>
-                  <td>{{ date("d-m-Y", strtotime($reading->reading->date)) }}</td>
+                <td>{{ $reading->customer->first_name }}</td>
+                <td>{{ $reading->meter->serial }}</td>
+                <td>{{ $reading->meter->status }}</td>
+                <td>{{ $reading->reading->previous }}</td>
+                <td>{{ $reading->reading->value }}</td>
+                <td>{{ $reading->reading->value - $reading->reading->previous }}</td>
+                <td>{{ $reading->reading->billing_officer }}</td>
+                <td>{{ date("d-m-Y", strtotime($reading->reading->date)) }}</td>
               </tr>
-          @endforeach
+            @endforeach
           </tbody>
       </table>
     </div>

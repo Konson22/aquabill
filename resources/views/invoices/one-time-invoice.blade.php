@@ -114,9 +114,11 @@
 @section('content')
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4>Water Bill</h4>
+        <h4>One Time Invoice</h4>
         <button class="btn btn-primary" onclick="printDiv('printable-onetime-area')">Print Bill</button>
     </div>
+
+    @foreach($payments as $payment)
     <div class="my-container" id="printable-onetime-area">
         <header class="d-flex">
             <img class="logo" src="{{ asset('logo.jpg') }}" alt="Logo">
@@ -128,98 +130,59 @@
         <div class="d-flex align-items-start justify-content-between">
             <div class="flex-1">
                 <div class="item-wraper">
-                    CUS NAME
-                    <span class="flex-1 d-flex justify-content-end">{{$customer->first_name}}</span>
+                    CUSTOMER NAME
+                    <span class="flex-1 d-flex justify-content-end">{{$payment->customer->first_name}}</span>
                 </div>
                 <div class="item-wraper">
                     CONTACT
-                    <span class="flex-1 d-flex justify-content-end">{{$customer->phone}}</span>
+                    <span class="flex-1 d-flex justify-content-end">{{$payment->customer->phone}}</span>
                 </div>
                 <div class="item-wraper">
-                    CUS TYPE
-                    <span class="flex-1 d-flex justify-content-end">{{$category->name ?? 'N/A'}}</span>
+                    CUSTOMER TYPE
+                    <span class="flex-1 d-flex justify-content-end">{{$payment->customer->category->name ?? 'N/A'}}</span>
                 </div>
             </div>
             <div class="flex-1 center-content">
                 <div class="item-wraper">
-                    AREA
-                    <span class="flex-1 d-flex justify-content-end">{{$location->name}}</span>
+                    AREA/ADDRESS
+                    <span class="flex-1 d-flex justify-content-end">{{$payment->customer->location->name ?? 'N/A' }}</span>
                 </div>
                 <div class="item-wraper">
-                    HOUSE NO
-                    <span class="flex-1 d-flex justify-content-end">{{$location->number}}</span>
+                    PLOT NUMBER
+                    <span class="flex-1 d-flex justify-content-end">{{$payment->customer->location->number ?? 'N/A' }}</span>
                 </div>
                 <div class="item-wraper">
-                    Tariff
-                    <span class="flex-1 d-flex justify-content-end">{{$payment->tariff}}</span>
-                </div>
-            </div>
-            <div class="flex-1">
-              <div class="item-wraper">
                     BILLING DATE
                     <span class="flex-1 d-flex justify-content-end">{{$payment->date}}</span>
                 </div>
-               <div class="item-wraper">
-                    OTHER CHARGES
-                    <span class="flex-1 d-flex justify-content-end">{{$payment->charges + $payment->amount}}</span>
-                </div>
-                 <div class="item-wraper">
+            </div>
+            <div class="flex-1">
+                <div class="item-wraper">
                     DESCRIPTION
                     <span class="flex-1 d-flex justify-content-end">{{$payment->description}}</span>
                 </div>
-            </div>
-        </div>
-        <div class="d-flex align-items-center justify-content-between">
-            <div class="flex-1 signiture">
-                {{ Auth::user()->name }}
-                <p class="sign">Sign:Billing Officer</p>
-            </div>
-            <div class="flex-1 center-content"></div>
-            <div class="flex-1">
-               
-              
-                 <div class="item-wraper">
+                <div class="item-wraper">
                     TOTAL AMOUNT:
                     <span class="flex-1 d-flex justify-content-end">{{$payment->amount}}</span>
                 </div>
             </div>
         </div>
-        {{-- <div class="d-flex align-items-start justify-content-between">
+        <div class="d-flex align-items-center justify-content-between mt-3">
+            <div class="signiture">
+                {{ Auth::user()->name }}
+                <p class="sign">Sign:Billing Officer</p>
+            </div>
             <div class="flex-1">
-                <div class="item-wraper">
-                    CUS NAME
-                    <span class="flex-1">{{$customer->first_name}}</span>
-                </div>
-                <div class="item-wraper">
-                    CONTACT
-                    <span class="flex-1">{{$customer->phone}}</span>
-                </div>
-                <div class="item-wraper">
-                    CUS TYPE
-                    <span class="flex-1">{{$category->name}}</span>
-                </div>
+                <ul>
+                    <li>Make the settlement of water bills monthly and take care of water tape in your primese.</li>
+                    <li>To report to Juba-Station management in case of damage or inquery Call:+211929928736/+211929928737</li>
+                </ul>
             </div>
-            <div class="flex-1 center-content">
-                <div class="item-wraper">
-                    AREA
-                    <span class="flex-1">{{$location->name}}</span>
-                </div>
-                <div class="item-wraper">
-                    HOUSE NO
-                    <span class="flex-1">{{$location->number}}</span>
-                </div>
-                <div class="item-wraper">
-                    Tariff
-                    <span class="flex-1">{{$payment->tariff}}</span>
-                </div>
-            </div>
-           
-        </div> --}}
-        <ul>
-            <li>Make the settlement of water bills monthly and take care of water tape in your primese.</li>
-            <li>To report to Juba-Station management in case of damage or inquery Call:+211929928736/+211929928737</li>
-        </ul>
+        </div>
     </div>
+    @endforeach
+
+
 @endsection
     <script>
         function printDiv(divId) {

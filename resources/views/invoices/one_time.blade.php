@@ -144,10 +144,16 @@
       <div class="d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center justify-content-between mb-4">
           <div class="d-flex align-items-center">
-            <a class="btn btn-primary text-white" href="/invoices"
+            <label for="scheckAll" class="btn btn-secondary d-flex align-items-center">
+              <input type="checkbox" id="scheckAll" class="mr-2" />
+              Select All
+            </label>
+            <button class="btn btn-primary text-white mx-4" id="sendSelected" 
+              @if (Auth::user()->role == 'Admin' OR Auth::user()->role == 'invoices') @else disabled @endif
             >
-              Water invoices
-            </a>
+              print Selected
+            </button>
+           
           </div>
         </div>
         
@@ -183,6 +189,7 @@
           @foreach($invoices as $payment)
             <tr data-id="{{$payment->id}}">
               <td>
+                <input type="checkbox" class="row-checkbox" />
                 {{ date("dm", strtotime($payment->date)) }}{{ $payment->id }}
               </td>
               <td>
@@ -268,7 +275,7 @@
       // Create a form dynamically and submit it
       const form = document.createElement("form");
       form.method = "POST";
-      form.action = "/invoices/multiple_invoices"; 
+      form.action = "/invoices/print_all_one_time_invoice"; 
       form.target = '_blank'
 
       // Add CSRF token for Laravel

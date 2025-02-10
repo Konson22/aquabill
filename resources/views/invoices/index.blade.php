@@ -75,13 +75,13 @@
         <div class="card-body d-flex justify-content-between flex-wra gap-4">
           <div class="d-flex align-items-center gap-3">
             <div class="card-info">
-              <h5 class="mb-0">{{ $totalPaidCount }}</h5>
+              <h5 class="mb-0">{{ $totalBills }}</h5>
               <p class="mb-0">Total Bills</p>
             </div>
           </div>
           <div class="d-flex align-items-center gap-3">
             <div class="card-info">
-              <h5 class="mb-0">{{ $totalBills }}</h5>
+              <h5 class="mb-0">{{ $totalPaidCount }}</h5>
               <p class="mb-0">Paid Bills</p>
             </div>
           </div>
@@ -208,19 +208,18 @@
               <td>{{ $payment->remaining }} SSP</td>
               <td>{{ date("d/m/Y", strtotime($payment->updated_at)) ?? '-----' }}</td>
               <td class="no-export">
-                <a class="no-export" href="{{ route('payments.show', $payment->id) }}" title="View" data-bs-toggle="modal" data-bs-target="#viewPaymentModal{{ $payment->id }}">
-                  <i class="ri-fullscreen-line"></i>
-                </a> 
-                <a class="no-export" href="/invoices/print/{{$payment->id }}" title="Print" target="_blank">
-                  <i class="ri-file-pdf-2-line"></i>
-                </a> 
                 @if (Auth::user()->role == 'Admin' AND $payment->status != 'Paid')
-                |
                 <a class="no-export" href="#" title="Pay" data-bs-toggle="modal" 
                   data-bs-target="#editPaymentModal{{ $payment->id }}">
                   <i class="ri-hand-coin-line"></i>
                 </a>  |
-              @endif
+                @endif
+                <a class="no-export" href="{{ route('payments.show', $payment->id) }}" title="View" data-bs-toggle="modal" data-bs-target="#viewPaymentModal{{ $payment->id }}">
+                  <i class="ri-fullscreen-line"></i>
+                </a> |
+                <a class="no-export" href="/invoices/print/{{$payment->id }}" title="Print" target="_blank">
+                  <i class="ri-file-pdf-2-line"></i>
+                </a> 
               </td>
             </tr>
           @endforeach

@@ -1,7 +1,7 @@
 <div class="modal fade" id="editCategoryModal{{ $category->id }}" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        <form action="{{ route('categories.update', $category->id) }}" method="POST">
+        <form method="POST" action="{{ route('categories.update', $category->id) }}">
           @csrf
           @method('PUT')
           <div class="modal-header">
@@ -14,10 +14,9 @@
               <label for="name">Category name</label>
             </div>
             <div class="form-floating form-floating-outline mb-3">
-              <input class="form-control" type="text" placeholder="Category name" name="tariff" id="tariff" value="{{$category->tariff}}" />
-              <label for="name">Tariff</label>
+              <input class="form-control" type="number" placeholder="Category name" name="tariff" id="tariff" value="{{$category->tariff}}" />
+              <label for="tariff">Tariff</label>
             </div>
-          
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
