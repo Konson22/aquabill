@@ -183,11 +183,11 @@
             <th class="font">Receipt No</th>
             <th class="font">Cus Name</th>
             <th class="font">Outstanding</th>
-            <th class="font">Amount</th>
+            <th class="font">VOL_CHARGE</th>
             <th class="font">Total Bill</th>
-            <th class="font">Paid</th>
-            <th class="font">C/Balance</th>
             <th class="font">Collect Date</th>
+             <th class="font">Paid</th>
+             <th class="font">BALANCE</th>
             <th class="font no-export">Actions</th>
           </tr>
         </thead>
@@ -204,6 +204,7 @@
               <td>{{ $payment->previous_balance }}</td>
               <td>{{ $payment->amount }} SSP</td>
               <td>{{ $payment->amount + $payment->previous_balance }} SSP</td>
+               <td>{{ date("d/m/Y", strtotime($payment->updated_at)) ?? '-----' }}</td>
               <td>{{ $payment->paid }} SSP</td>
               <td>{{ $payment->remaining }} SSP</td>
               <td>{{ date("d/m/Y", strtotime($payment->updated_at)) ?? '-----' }}</td>
