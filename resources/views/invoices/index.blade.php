@@ -180,13 +180,13 @@
       <table class="table table-md invoice-table font" id='example'>
         <thead>
           <tr>
-            <th class="font">Receipt No</th>
-            <th class="font">Cus Name</th>
-            <th class="font">Outstanding</th>
+            <th class="font">RECIEPT NO</th>
+            <th class="font">CUS NAME</th>
+            <th class="font">OUTSTANDING</th>
             <th class="font">VOL_CHARGE</th>
-            <th class="font">Total Bill</th>
-            <th class="font">Collect Date</th>
-             <th class="font">Paid</th>
+            <th class="font">TOTAL</th>
+            <th class="font">COLLECT DATE</th>
+             <th class="font">PAID</th>
              <th class="font">BALANCE</th>
             <th class="font no-export">Actions</th>
           </tr>
