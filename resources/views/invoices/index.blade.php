@@ -207,7 +207,6 @@
                <td>{{ date("d/m/Y", strtotime($payment->updated_at)) ?? '-----' }}</td>
               <td>{{ $payment->paid }} SSP</td>
               <td>{{ $payment->remaining }} SSP</td>
-              <td>{{ date("d/m/Y", strtotime($payment->updated_at)) ?? '-----' }}</td>
               <td class="no-export">
                 @if (Auth::user()->role == 'Admin' AND $payment->status != 'Paid')
                 <a class="no-export" href="#" title="Pay" data-bs-toggle="modal" 
