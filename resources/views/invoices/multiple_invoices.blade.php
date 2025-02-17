@@ -88,7 +88,7 @@
             margin-left: 7px;
             flex: 1;
             padding: 2px 2px;
-            background-color: rgb(255, 255, 255);
+            background-color: rgb(240, 240, 240);
         }
 
         .page_break{
