@@ -204,10 +204,9 @@
               <td>{{ $payment->previous_balance }}</td>
               <td>{{ $payment->amount }} SSP</td>
               <td>{{ $payment->amount + $payment->previous_balance }} SSP</td>
-               <td>{{ date("d/m/Y", strtotime($payment->updated_at)) ?? '-----' }}</td>
+              <td>{{ date("d/m/Y", strtotime($payment->updated_at)) ?? '-----' }}</td>
               <td>{{ $payment->paid }} SSP</td>
               <td>{{ $payment->remaining }} SSP</td>
-              <td>{{ date("d/m/Y", strtotime($payment->updated_at)) ?? '-----' }}</td>
               <td class="no-export">
                 @if (Auth::user()->role == 'Admin' AND $payment->status != 'Paid')
                 <a class="no-export" href="#" title="Pay" data-bs-toggle="modal" 
@@ -225,16 +224,6 @@
             </tr>
           @endforeach
         </tbody>
-        <tfoot>
-          <td>Total</td>
-          <td>---</td>
-          <td>---</td>
-          <td>{{ $totalRevenue }}</td>
-          <td>{{ $totalPaid }}</td>
-          <td>{{ $totalRemaining }}</td>
-          <td>---</td>
-          <td>---</td>
-        </tfoot>
       </table>
     </div>
   </div>
